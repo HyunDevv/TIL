@@ -1,10 +1,29 @@
 # Git
 
-> Git은 분산형 버전관리시스템(DVCS) 중 하나이다.
+> Git은 **분산형 버전관리시스템(DVCS)** 중 하나이다.
+
+
 
 ## Git 사전 준비
 
-> git을 사용하기 전에 커밋을 남기는 사람에 대한 정보를 설정(최초)    (       {여기안에는 변수를 쓴다}      )
+ #### 1. [Github](https://github.com/) 가입
+
+* 이메일 인증을 해야한다
+
+#### 2. [git bash (git for windows)](https://gitforwindows.org/) 다운
+
+#### 3.[GitHub Student Developer Pack](https://education.github.com/pack) 받기
+
+* @edu @ac.kr 이메일이 있으면(대학교), 무료로 한단계 높은 버전 제공
+* 다른 이메일 등록하신 분들도 추가로 하실 수가 있다.
+
+
+
+---
+
+> git을 사용하기 전에 커밋을 남기는 사람에 대한 정보를 설정(최초)    
+>
+> *  {여기안에는 변수를 쓴다} 
 
 ```bash
 $ git config --global user.name '{username}'
@@ -13,21 +32,25 @@ $ git config --global user.email '{email}'
 
 * 추후에 commit을 하면, 작성한 사람(author)로 저장된다.
 
-* email 정보는 github에 등록된 이메일로 설정을 하는 것을 추천(잔디밭)
+* email 정보는 github에 등록된 이메일로 설정을 하는 것을 추천 (잔디밭)
 
 * 설정 내용을 확인하기 위해서는 아래의 아래의 명령어를 입력한다.
 
   ```bash
-  $ git config ---global -l
+  $ git config --global -l
   user.name=KimJaeHyun52
   user.email=kjhkjh5265@smail.kongju.ac.kr
   ```
 
-> git bash 설치 [링크]()
+
 
 ## 기초흐름
 
 > 작업->add->commit
+>
+> ![image-20200917194529265](md-images/image-20200917194529265.png)
+
+
 
 ### 0. 저장소 설정
 
@@ -51,7 +74,7 @@ $ git add md-images/ # 특정 폴더
 
 ## 2. `commit`
 
-> 버전을 기록(스냅샷)
+> **버전**을 기록(스냅샷)
 
 ```bash
 $ git commit -m '커밋메시지'
@@ -91,9 +114,9 @@ Untracked files:
 
 ```
 
+![image-20200917132253857](md-images/image-20200917132253857-1600332273391.png)
 
 
-![image-20200917132253857](md-images/image-20200917132253857.png)
 
 
 
@@ -109,6 +132,8 @@ $ git remote add origin {URL}
 
 * 깃아, 원격(remote)저장소로 추가해줘(add) origin이라는 이름으로 URL을
 
+  * origin 자리에는 remote의 이름이 들어가며 관례 상 origin을 사용한다.
+
 * 원격저장소 삭제하기 위해서는 아래의 명령어를 사용한다.
 
   ```bash
@@ -121,6 +146,8 @@ $ git remote add origin {URL}
 
 ```bash
 $ git remote -v
+origin  https://github.com/KimJaeHyun52/TIL.git (fetch)
+origin  https://github.com/KimJaeHyun52/TIL.git (push)
 ```
 
 ### 3. push
