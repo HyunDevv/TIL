@@ -156,3 +156,8 @@ origin  https://github.com/KimJaeHyun52/TIL.git (push)
 $ git push origin master
 ```
 
+
+
+---
+
+- 자리 옮길때 자격 증명 관리자에서 깃헙 인증 제거해라!
