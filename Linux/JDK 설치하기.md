@@ -1,4 +1,4 @@
-# 리눅스에 자바 설치하기
+# 리눅스에 JDK 설치하기
 
 1. 오라클에서 자바 다운(Linux x64 Compressed Archive) (jdk-8u261-linux-x64.tar.gz)
 2. tar xvf jdk-8u261-linux-x64.tar.gz

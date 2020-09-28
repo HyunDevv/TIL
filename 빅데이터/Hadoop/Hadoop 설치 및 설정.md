@@ -81,6 +81,8 @@
       PATH=$JAVA_HOME/bin:$HADOOP_HOME/bin:.:$PATH
       ```
 
+      후에 **reboot!!!**
+
       
 
    3. 환경설정 파일 수정
@@ -188,7 +190,7 @@
       
 
       vi slaves                #데이터노드를 실행할 서버 설정
-
+   
       dataserver
       
       
