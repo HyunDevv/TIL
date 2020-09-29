@@ -181,16 +181,22 @@
 
       
 
-      (완전분산모드 시)
+      vi slaves 
 
-      vi masters             #보조네임노드를 실행할 서버 설정 
-
-      secondserver
+      localhost
 
       
 
-      vi slaves                #데이터노드를 실행할 서버 설정
+      (완전분산모드 시)
+
+      vi masters             #보조네임노드를 실행할 서버 설정 
    
+      secondserver
+      
+      
+      
+      vi slaves                #데이터노드를 실행할 서버 설정
+      
       dataserver
       
       

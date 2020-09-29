@@ -252,6 +252,8 @@ cd
 
 vi hive.sh
 
+chmod 777 hive.sh
+
 ```bash
 #!/bin/sh
 
