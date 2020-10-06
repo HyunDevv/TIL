@@ -214,7 +214,7 @@ $<NA>
 NULL
 ```
 
-### 행렬(동일타입의 Matrix)
+### 행렬(동일타입의 2차원 Matrix)
 
 > R의 행렬Matrix은 수학 시간에 배운 행렬의 정의와 같이 행(로우), 열(컬럼)의 수가 지정된 구조다. 벡터와 마찬가지로 행렬에는 **한 가지 유형의 스칼라만 저장**할 수 있다.
 
@@ -370,3 +370,78 @@ str(ex1)
 한글 컨트롤이 예민하다..
 
 - encoding / fileEncoding
+
+
+
+외부에서 가져오면 typeof로 꼭 데이터구조 확인한다!!
+
+(데이터프레임이 아닐 수 도 있다.)
+
+
+
+CSV 파일 입출력 함수
+
+| read.csv : CSV 파일을 데이터 프레임으로 읽어들인다.          |
+| ------------------------------------------------------------ |
+| `read.csv(  file,          # 파일명                                                            header=FALSE,  # 파일의 첫 행을 헤더로 처리할 것인지 여부  # 데이터에 결측치가 포함되어 있을 경우 R의 NA에 대응시킬 값을 지정한다.  # 기본값은 "NA"로, "NA"로 저장된 문자열들은 R의 NA로 저장된다.  na.strings="NA",  # 문자열을 팩터로 저장할지 또는 문자열로 저장할지 여부를 지정하는 데 사용한다. 별다른  # 설정을 하지 않았다면 기본값은 보통 TRUE다.  stringsAsFactors=default.stringsAsFactors() )`반환 값은 데이터 프레임이다. |
+| write.csv : 데이터 프레임을 CSV로 저장한다.                  |
+| `write.csv(  x,              # 파일에 저장할 데이터 프레임 또는 행렬             file="",        # 데이터를 저장할 파일명  row.names=TRUE  # TRUE면 행 이름을 CSV 파일에 포함하여 저장한다. )` |
+
+
+
+- `.rda` 파일은 R만 아는 파일이다
+
+
+
+## dplyr 패키지
+
+### 컬럼이름 바꾸기
+
+
+```R
+library(dplyr)  #dplyt 라이브러리 설치
+sh <- read.csv("shop2.txt",
+               header = T,
+               stringsAsFactors=F,
+               fileEncoding = "UTF-8"
+)
+sh <- rename(sh, ID=TX_ID, NAME=TX_NM, AGE=TX_A, TEMP=TX_T,PRICE=TX_P, QT=TX_Q)
+#rename 사용가능(A, B=C) A에서 C를 B로 바꾼다 
+```
+
+- ifelse를 3항연산자 처럼 사용
+
+  ```R
+  sh$AGE_NY <- ifelse(sh$AGE >= 25, "Y", "N")
+  ```
+
+
+
+sh2 <- sh %>% select(-ID,-AGE,-GRADE)
+sh3 <- sh %>% filter(GRADE == 'G' & AGE_HL == 'M' & TEMP != 'NA')
+mean(sh3$TOTAL)
+sh4 <- sh %>% arrange(desc(AGE), MM)
+
+
+
+smr <- sh %>% summarise(TOT = sum(PRICE), AGES = mean(AGE))
+smr2 <- sh %>% group_by(NAME) %>% summarise(TOTAVG = mean(PRICE * QT))          #List
+smr3 <- as.data.frame(smr2)
+
+
+
+## psych 패키지
+
+install.packages("psych")
+
+library(psych)
+
+- describe()
+
+## descr 패키지
+
+install.packages("descr")
+
+library(descr)
+
+- summarise()
