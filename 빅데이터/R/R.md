@@ -417,19 +417,6 @@ sh <- rename(sh, ID=TX_ID, NAME=TX_NM, AGE=TX_A, TEMP=TX_T,PRICE=TX_P, QT=TX_Q)
 
 
 
-sh2 <- sh %>% select(-ID,-AGE,-GRADE)
-sh3 <- sh %>% filter(GRADE == 'G' & AGE_HL == 'M' & TEMP != 'NA')
-mean(sh3$TOTAL)
-sh4 <- sh %>% arrange(desc(AGE), MM)
-
-
-
-smr <- sh %>% summarise(TOT = sum(PRICE), AGES = mean(AGE))
-smr2 <- sh %>% group_by(NAME) %>% summarise(TOTAVG = mean(PRICE * QT))          #List
-smr3 <- as.data.frame(smr2)
-
-
-
 ## psych 패키지
 
 install.packages("psych")
@@ -445,3 +432,16 @@ install.packages("descr")
 library(descr)
 
 - summarise()
+
+---
+
+sh2 <- sh %>% select(-ID,-AGE,-GRADE)
+sh3 <- sh %>% filter(GRADE == 'G' & AGE_HL == 'M' & TEMP != 'NA')
+mean(sh3$TOTAL)
+sh4 <- sh %>% arrange(desc(AGE), MM)
+
+
+
+smr <- sh %>% summarise(TOT = sum(PRICE), AGES = mean(AGE))
+smr2 <- sh %>% group_by(NAME) %>% summarise(TOTAVG = mean(PRICE * QT))          #List
+smr3 <- as.data.frame(smr2)
