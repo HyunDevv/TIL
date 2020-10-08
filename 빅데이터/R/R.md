@@ -1,4 +1,4 @@
-# R 
+R 
 
 온라인교재:https://thebook.io/006723/
 
@@ -393,9 +393,84 @@ CSV 파일 입출력 함수
 
 
 
-## dplyr 패키지
+## 필요할 때 추가해서 사용하는 패키지
 
-### 컬럼이름 바꾸기
+> 로드,가공,시각화,모델링,리포트,공간 등 다양한 기능을 가진 패키지를 사용할 수 있다.
+
+- 위치 :C:\Users\i\Documents\R\win-library\3.5
+- 컴퓨터 간 동일한 패키지 환경 만들기 : 위의 경로의 폴더를 복사해 사용하면 된다.
+- But, 리눅스와 같은 다른 OS에서 사용하려면 리눅스에서 다시 설치해야 한다.
+
+
+
+### dplyr 패키지
+
+> 데이터를 가공할 때 변수명을 변경하거나 필요한 데이터를 추출하는 기능 등
+
+install.packages("dplyr")
+
+library(dplyr)
+
+
+
+- filter() 함수: 조건식에 맞는 데이터를 필터링
+
+  - filter(데이터 세트, 조건절)
+
+- arrange() 함수 : 정렬 (기본 오름차순)
+
+  - arrange(데이터 세트, 정렬할 열1, desc(정렬할 열2))
+
+- select() 함수 : 지정한 변수만 추출
+
+  - select(데이터 세트, 추출 열)
+
+- mutate() 함수 : 데이터 세트에 열을 추가
+
+  - mutate(데이터 세트, 추가할 열 이름 = 조건1,...)
+
+- distinct() 함수 : 중복 값을 제거
+
+  - distinct(데이터 세트, 열1, 열2, ..)
+
+- summarise() 함수 : 통계 함수와 함께 사용, 데이터를 요약
+
+  - summarise(데이터 세트, 요약 결과 저장 열 = 통계 함수)
+
+- group_by() 함수
+
+  - group_by(데이터, 묶을 열)
+
+    ```R
+    # mtcars에서 cyl별로 묶고 갯수를 나타낼 때
+    gr_crl <- group_by(mtcars, cyl)
+    summarise(gr_cyl, n())
+    ```
+
+- sample_n() 함수 : 데이터에서 샘플 데이터를 추출
+
+  - sample_n(데이터 세트, 추출할 랜덤샘플 개수)
+
+- sample_frac() 함수
+
+  - sample_frac(데이터 세트, 추출할 랜덤샘플 비율)
+
+
+
+- `%>%` 연산자
+
+  > `%>%` 연산자는 파이프, 즉 연결하여 연산하는 기능
+
+  ```R
+  #mtcar에서 cyl별 그룹으로 묶고 갯수(n())로 요약
+  group_by(mtcars, cyl) %>% summarise(n())
+  ```
+
+  
+
+
+
+- rename() 함수 : 컬럼이름 바꾸기
 
 
 ```R
@@ -409,30 +484,6 @@ sh <- rename(sh, ID=TX_ID, NAME=TX_NM, AGE=TX_A, TEMP=TX_T,PRICE=TX_P, QT=TX_Q)
 #rename 사용가능(A, B=C) A에서 C를 B로 바꾼다 
 ```
 
-- ifelse를 3항연산자 처럼 사용
-
-  ```R
-  sh$AGE_NY <- ifelse(sh$AGE >= 25, "Y", "N")
-  ```
-
-
-
-## psych 패키지
-
-install.packages("psych")
-
-library(psych)
-
-- describe()
-
-## descr 패키지
-
-install.packages("descr")
-
-library(descr)
-
-- summarise()
-
 ---
 
 sh2 <- sh %>% select(-ID,-AGE,-GRADE)
@@ -445,3 +496,239 @@ sh4 <- sh %>% arrange(desc(AGE), MM)
 smr <- sh %>% summarise(TOT = sum(PRICE), AGES = mean(AGE))
 smr2 <- sh %>% group_by(NAME) %>% summarise(TOTAVG = mean(PRICE * QT))          #List
 smr3 <- as.data.frame(smr2)
+
+---
+
+- ifelse를 3항연산자 처럼 사용
+
+  ```R
+  sh$AGE_NY <- ifelse(sh$AGE >= 25, "Y", "N")
+  ```
+
+---
+
+
+
+### psych 패키지
+
+install.packages("psych")
+
+library(psych)
+
+- describe()
+
+
+
+### descr 패키지
+
+install.packages("descr")
+
+library(descr)
+
+- freq() 함수
+
+
+
+- names(airquality) <- tolower(names(airquality)) : 컬럼명을 모두 소문자로 바꾸는 함수
+
+---
+
+
+
+### reshape2 패키지
+
+install.packages("reshape2")
+
+library(reshape2)
+
+- melt() 함수 : 가로정렬 함수이다 (167p 참조)
+  melt (데이터 세트, id.var = "정렬 할 기준열", measure.vars = "변환(보고싶은) 열")
+
+| 기준열 | variable (반환열) | value (값) |
+| :----: | :---------------: | :--------: |
+|  ...   |        ...        |    ...     |
+|  ...   |        ...        |    ...     |
+
+- dcast() 함수 : melt 반대로 - variable을 컬럼으로..(172p 참조)
+
+  - dcast(데이터 세트, 기준열1 + 기준열2 ~ 변환열(variable))
+
+  - dcast(데이터 세트, 기준열1 + 기준열2 ~ 변환열(variable), 처리함수(ex.mean))
+
+
+
+- acast() 함수 : dcast() 함수와 비슷하지만 형태가 다르다 
+  - acast(데이터 세트, 기준열1 + 기준열2 ~ 변환열(variable))
+  - acast(데이터 세트, 기준열1 + 기준열2 ~ 변환열(variable), 처리함수(ex.mean))
+
+
+
+### rJava 패키지
+
+### KoNLP 패키지
+
+> KoNLP와 wordcloud2를 통해 형태소를 분석하고 다양한 모양의 워드클라우드를 만들 수 있다.
+
+#### 설치
+
+1. rstudio 끄기
+
+아래 사이트에서 Rtools35.exe 설치
+
+설치 시 기본 옵션이외의 설치 옵션 모두 클릭
+
+https://cran.r-project.org/bin/windows/Rtools/history.html
+
+2. rstudio 켜기
+
+install.packages("multilinguer")
+
+3. 의존성 설치
+
+install.packages(c("hash", "tau", "Sejong", "RSQLite", "devtools", "bit", "rex", "lazyeval", "htmlwidgets", "crosstalk", "promises", "later", "sessioninfo", "xopen", "bit64", "blob", "DBI", "memoise", "plogr", "covr", "DT", "rcmdcheck", "rversions"), type = "binary")
+
+4. Git를 통해 KoNLP를 다운 받기 
+
+\- git 연결 프로그램 다운로드
+
+install.packages("remotes")
+
+\- KoNLP 설치
+
+remotes::install_github('haven-jeon/KoNLP', upgrade = "never", INSTALL_opts=c("--no-multiarch"))
+
+5. KoNLP 설치 확인 및 단어 다운로드
+
+library(KoNLP)
+
+useSystemDic()
+
+useSejongDic()
+
+useNIADic()
+
+6. install.packages("wordcloud2")
+
+
+
+텍스트 수집 -> 분해 -> 단어 추출 -> 정제 -> 정형 데이터 생성 -> 분석 -> 시각화
+
+- wordcloud2 사용 (wc.txt라는 있는 자료로 분석)
+
+```R
+#시작전에 wc.txt에 분석할 문서를 넣는다
+library(KoNLP)
+library(wordcloud2)
+useSystemDic()
+useSejongDic()
+useNIADic()
+
+#새로운 단어들을 추가한다
+add_wd <- c("코로나","코로나19")
+buildDictionary(user_dic = data.frame(
+  add_wd, rep("ncn",length(add_wd))
+), replace_usr_dic =  T)
+
+wd <- readLines("wc.txt", encoding = "UTF-8")
+#이 문장에서 명사만 추출하겠다
+wd2 <- sapply(wd, extractNoun, USE.NAMES =  F) # USE.NAMES =  F열이름을 사용하지 않겠다) 
+
+
+# 추출한 명사들을 벡터로 만든다
+lwd <- unlist(wd2)
+
+# 사전에서 단어를 제외한다
+lwd <- gsub("[0-9]","",lwd)
+lwd <- gsub("[a-z]","",lwd)
+lwd <- gsub("[A-Z]","",lwd)
+lwd <- gsub("\\W","",lwd)
+lwd <- gsub("","",lwd)
+lwd <- gsub("한국","",lwd)
+lwd <- gsub("유엔","",lwd)
+
+# 벡터데이터를 필터링한다(x는 단어들이 하나씩 들어간다)
+lwd2 <- Filter(function(x){
+  nchar(x) >= 2  #한 자리의 단어는 제외한다
+},lwd)
+
+# 벡터안에서 단어들을 센다
+wc <- table(lwd2)
+
+# 제일 많은 순으로 정렬
+wc <- sort(wc, decreasing = T)
+
+# wordcloud2로 그린다
+my_graph <- wordcloud2(wc, color = "random-light", backgroundColor = "black")
+
+# html형식으로 temp.html 파일 저장하기
+library("htmlwidgets")
+saveWidget(my_graph,"tmp.html",selfcontained = F)
+
+#temp.html 파일 → fig_1.png로 변환하기
+library(webshot)
+webshot::install_phantomjs()
+webshot("tmp.html","fig_1.png", delay =5, vwidth = 720, vheight=720) 
+
+
+```
+
+- 웹사이트 자료 분석
+
+  ```R
+  #시작전에 wc.txt에 분석할 문서를 넣는다
+  library(KoNLP)
+  library(wordcloud2)
+  useSystemDic()
+  useSejongDic()
+  useNIADic()
+  
+  #새로운 단어들을 추가한다
+  add_wd <- c("코로나","코로나19")
+  buildDictionary(user_dic = data.frame(
+    add_wd, rep("ncn",length(add_wd))
+  ), replace_usr_dic =  T)
+  
+  wd <- readLines("https://www.nongmin.com/news/NEWS/FLD/CNT/327519/view", encoding = "UTF-8")
+  #이 문장에서 명사만 추출하겠다
+  wd2 <- sapply(wd, extractNoun, USE.NAMES =  F) # USE.NAMES =  F열이름을 사용하지 않겠다) 
+  
+  
+  # 추출한 명사들을 벡터로 만든다
+  lwd <- unlist(wd2)
+  
+  # 사전에서 단어를 제외한다
+  lwd <- gsub("[0-9]","",lwd)
+  lwd <- gsub("[a-z]","",lwd)
+  lwd <- gsub("[A-Z]","",lwd)
+  lwd <- gsub("\\W","",lwd)
+  lwd <- gsub("","",lwd)
+  lwd <- gsub("창열","",lwd)
+  lwd <- gsub("__","",lwd)
+  lwd <- gsub("_","",lwd)
+  
+  
+  # 벡터데이터를 필터링한다(x는 단어들이 하나씩 들어간다)
+  lwd2 <- Filter(function(x){
+    nchar(x) >= 2  #한 자리의 단어는 제외한다
+  },lwd)
+  
+  # 벡터안에서 단어들을 센다
+  wc <- table(lwd2)
+  
+  # 제일 많은 순으로 정렬 후 상위 100개만 저장
+  wc <- head(sort(wc, decreasing = T),100)
+  
+  # wordcloud2로 그린다
+  my_graph <- wordcloud2(wc, color = "random-light", backgroundColor = "black")
+  
+  # html형식으로 temp.html 파일 저장하기
+  library("htmlwidgets")
+  saveWidget(my_graph,"tmp.html",selfcontained = F)
+  
+  #temp.html 파일 → fig_1.png로 변환하기
+  library(webshot)
+  webshot::install_phantomjs()
+  webshot("tmp.html","c:/R/fig_1.png", delay =5, vwidth = 720, vheight=720) 
+  ```
+
+  
