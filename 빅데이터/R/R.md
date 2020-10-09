@@ -1,4 +1,4 @@
-R 
+# R 
 
 온라인교재:https://thebook.io/006723/
 
@@ -732,3 +732,420 @@ webshot("tmp.html","fig_1.png", delay =5, vwidth = 720, vheight=720)
   ```
 
   
+
+### ggplot2 패키지
+
+install.packages("ggplot2")
+
+library(ggplot2)
+
+```R
+library(ggplot2)
+jpeg(filename =  "gg1.jpg", width = 300, height = 300, quality = 120) 
+ggplot(airquality, aes(x=Day,y=Temp)) + geom_point(size=3, color="red")
+dev.off()
+```
+
+### googleVis 패키지
+
+install.packages("googleVis")
+
+library(googleVis)
+
+
+
+## 자바와 연동
+
+설치 : install.packages("Rserve")
+
+구동 : 
+
+- Rserve::run.Rserve()
+
+- Rserve::Rserve()    # 백그라운드에서 실행, 현재 R이 동작하는 컴퓨터에서 밖에 접속 불가
+
+- **Rserve::Rserve(args="--RS-enable-remote") # 이렇게 해야 다른대에서도 접속가능**
+
+
+
+연결끊으려면 RStudio를 꺼야한다..
+
+
+
+
+
+**Java에서의 Rserve를 이용한 R사용**
+
+****
+
+**첨부파일**
+
+REngine.jar
+
+RserveEngine.jar
+
+**1. Rserve**
+
+Rserve는 GPL License를 가지고 있는 R의 라이브러리로서 설치를 하면 Java, C, C++, PHP와 같은 다른 프로그램에서 TCP/IP로 R에 원격 접속, 인증, 파일전송을 가능하게 해준다. Rserve는 최근까지도 최신버젼이 지속적으로 업데이트가 되고 있다.
+
+ 
+
+ 리모트 접속
+
+Rserve(args="--RS-enable-remote")
+
+new RConnection("ip")
+
+
+
+RConnection rconn = null;
+
+rconn = new RConnection();
+
+
+
+한글 문제 해결
+
+rconn.setStringEncoding("utf8")
+
+rconn.eval("source('C:/r/d1/jdbc.R',encoding='UTF-8')");
+
+
+
+
+
+**3. R의 자료구조와 Java에서의 자료구조**
+
+| **자료구조**                      | **구성차원**   | **데이터 타입**                                | **복수 데이터 타입****적용 여부** |
+| --------------------------------- | -------------- | ---------------------------------------------- | --------------------------------- |
+| **벡터(vector)**                  | **1차원**      | **수치/문자/복소수/논리**                      | **불가능**                        |
+| **행렬(matrix)**                  | **2차원**      | **수치/문자/복소수/논리**                      | **불가능**                        |
+| **데이터 프레임****(data frame)** | **2차원**      | **수치/문자/복소수/논리**                      | **가능**                          |
+| **배열(array)**                   | **2차원 이상** | **수치/문자/복소수/논리**                      | **불가능**                        |
+| **요인(factor)**                  | **1차원**      | **수치/문자**                                  | **불가능**                        |
+| **시계열****(time series)**       | **2차원**      | **수치/문자/복소수/논리**                      | **불가능**                        |
+| **리스트(lit)**                   | **2차원 이상** | **수치/문자/복소수/논리/****함수/표현식/call** | **가능**                          |
+
+**4‑1 R의 자료구조**
+
+표에서 보듯이 R은 사용자의 편의성을 제공하기 위하여 다양한 자료구조를 제공한다.
+
+REngine이 제공하는 REXP 클래스는 R이 사용 하는 자료구조를 Java에서도 사용이 가능하도록 기능을 제공하여 준다.
+
+REXP는 수치를 일반적으로 나타내는 수치형과 같은 데이터 타입의 경우에는 double과 같은 단일형, double[]같은 일차원 배열, double[][]같은 이차원 배열등의 데이터 타입으로 반환하여 사용할 수가 있다. 그밖에 다른 데이터 타입의 경우에는 단일형이나 일차원 배열로 데이터를 가져올 수 있다.
+
+하지만 R에서는 일반적인 데이터 구조는 데이터 프레임과 같이 복수 데이터 타입을 제공하는 자료 구조일 것이다. 데이터 프레임과 같은 경우에는 REXP만 이용하여 Java에서 사용하기에는 무리가 있다. 이럴 경우 Java에서는 REngine에서 제공하는 RList를 이용하여 Java에서 데이터를 사용할 수 있게 지원하여 준다. 하지만 데이터 프레임과 같은 형식으로 사용 할 수 있으므로 데이터 프레임에 대한 기본 지식을 가져야 사용 할 수가 있을 것이다.
+
+데이터 프레임은 관찰치수가 같은 행별로 있는 이루어져 있는 데이터 형이다. 행을 나타내는 필드명이 곧 변수명이라고 생각 할 수 있고 레코드의 값들은 변수에 할당된 배열구조 라고 생각 할 수 있다. 위 예제와 같이 Kids, Ages, Height, Stats등의 리스트들이 나열된 형태의 자료구조를 데이터 프레임이라고 한다.
+
+Age의 레코드수가 5개이라면 Height의 레코드수도 5개가 존재해야 한다. 각 리스트의 개수가 다르면 데이터 프레임은 생성될 수가 없다. Java에서 데이터 프레임을 받아들인 RList 객체는 필드의 Index 또는 필드명에 따라 REXP 객체를 반환 해준다. Java는 이를 이용해 데이터 프레임의 데이터를 사용 할 수가 있다.
+
+Row별로 데이터를 가져오면 좋겠지만 아직 Java에서는 Row에 대한 데이터만 가져오는 방식은 제공하고 있지 않다.
+
+**4. Rserve 기본API**
+
+Rserve에서 제공하는 Java client API는 원격에 있는 R에 접속하여 데이터를 송수신 하며 파일을 생성 및 읽어 들일 수 있다. Rserve에서 기본적으로 사용하는 기본 API중 본문에서 테스트로 사용하는 API 메소드 몇 가지만 알아보도록 하겠다. 자세한 API는 http://rforge.net/org/doc/ 를 통하여 확인 할 수 있다.
+
+**4.1 R에 접속하여 명령 실행 – RConnection**
+
+RConnection은 R에 접속 하여 핵심적인 역할을 수행하는 클래스이다. 이 클래스는 R에 접속, 인증, 세션 종료, 파일 생성, 파일 읽기, 자료 전송, 자료 조회 등을 처리한다.
+
+| **생성자**                         |                                               |
+| ---------------------------------- | --------------------------------------------- |
+| RConnection()                      | 기본 포트인 6311로 로컬 호스트에 접속한다.    |
+| RConnection(String host)           | 기본 포트인 6311로 명시된 호스트에  접속한다. |
+| RConnection(String host, int port) | 명시된 포트로 명시된 호스트에 접속한다.       |
+
+ 
+
+| **메소드**   |                                                              |
+| ------------ | ------------------------------------------------------------ |
+| assign       | R의 변수 또는 환경변수에 REXP 또는 String 형태로 데이터를 지정하여 보낼 수 있다. |
+| eval         | R에 직접적인 명령을 내리고 REXP형으로 데이터를 반환 받는다.  |
+| parseAndEval | R서버에 있는 해당 변수의 데이터를 REXP형으로 반환 받는다.    |
+| close        | 접속을 끊는다.                                               |
+| login        | R서버에 해당 계정과 암호로 로그인한다.                       |
+
+ 
+
+**4.2 R 데이터형 타입 Java에서 사용 – REXP**
+
+R과 Java에서 서로의 자료구조와 데이터 타입을 서로 사용 할 수 있도록 지원하는 데이터 모델형의 클래스이다. 이 클래스에서 데이터 프레임과 행렬 구조로 데이터 모델을 생성 시킬수 있다.
+
+| **생성자**          |                                              |
+| ------------------- | -------------------------------------------- |
+| REXP()              | 루트 생성자이다. REXP(null)과 같다.          |
+| REXP(REXPList attr) | REXPList를 지니고 있는 REXP 객체를 생성한다. |
+
+ 
+
+| **메소드**         |                                                              |
+| ------------------ | ------------------------------------------------------------ |
+| asBytes            | Byte 일차원 배열형으로 반환하여 준다.                        |
+| asDouble           | double 형으로 반환하여 준다,                                 |
+| asDoubleMatrix     | double 이차원 배열형으로 반환하여 준다.                      |
+| asDoubles          | double 일차원 배열형으로 반환하여 준다.                      |
+| asList             | RList 형으로 반환하여 준다.                                  |
+| asString           | String 형으로 반환하여 준다.                                 |
+| asStrings          | String 일차원 배열형으로 반환하여 준다.                      |
+| createDataFrame    | RList 형으로 받은 데이터 리스트를 데이터프레임으로 생성시켜준다. |
+| createDoubleMatrix | double[][] 형으로 받은 이차원 배열을 R의 행렬형태로 생성시켜준다. |
+| length             | 데이터의 개수를 알수 있다.                                   |
+
+ 
+
+**4.3 R 데이터 프레임을Java에서 사용 – RList**
+
+Map 인터페이스를 구현하고 있는 RList는 내부적으로 Vector 값들을 지진 리스트들이 관리하고 있다. RList를 이용하여 데이터 프레임과 같은 자료 구조를 사용 할 수 있다.
+
+| **생성자**                                   |                                |
+| -------------------------------------------- | ------------------------------ |
+| RList()                                      | 비어있는 리스트를 생성한다.    |
+| RList(Collection contents)                   | 이름이 없는 리스트를 생성한다. |
+| RList(Collection contents, Collection names) | 이름이 있는 리스트를 생성한다. |
+| RList(Collection contents, String[] names)   | 이름이 있는 리스트를 생성한다. |
+| RList(REXP[] contents)                       | 이름이 없는 리스트를 생성한다. |
+| RList(REXP[] contents, String[] names)       | 이름이 있는 리스트를 생성한다. |
+
+ 
+
+| **메소드** |                                                         |
+| ---------- | ------------------------------------------------------- |
+| at         | Index 또는 필드명에 해당하는 REXP 객체를 반환하여 준다. |
+| put        | Key에 맞추어 데이터 오브젝트를 집어 넣는다.             |
+| putAll     | Map이나 RList 형의 모든 데이터를 입력한다.              |
+| remove     | Index난 Key에 해당하는 데이터를 지운다.                 |
+| removeAll  | Collection에 해당하는 모든 데이터를 지운다.             |
+| size       | 리스트의 개수를 알 수 있다.                             |
+
+**5. 예제소스**
+
+**5.1 R접속 및 함수 호출**
+
+RConnection c = **new** RConnection();REXP x = c.eval("R.version.string");System.*out*.println("R version : " + x.asString());
+
+<w:wrap type="none"></w:wrap><w:anchorlock></w:anchorlock>
+
+로컬 호스트에 있는 R에 접속을 하고 R 서버의 버전을 가져와서 출력하는 소스이다.
+
+**5.2 자료 전송**
+
+**double**[] dataX = { 10, 1, 2, 3, 4, 5, 6, 7, 8, 9 };**double**[] dataY = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }; c.assign("x", dataX);c.assign("y", dataY); 
+
+<w:wrap type="none"></w:wrap><w:anchorlock></w:anchorlock>
+
+RConnection의 assign 메소드로 R 서버에 x와 y라는 변수에 데이터를 지정 하여 데이터를 전송하였다.
+
+**5.3 자료 조회**
+
+REXP x = c.eval("rnorm(100)");**double**[] d = x.asDoubles();
+
+<w:wrap type="none"></w:wrap><w:anchorlock></w:anchorlock>
+
+R에서 rnorm() 함수를 이용하여 100까지의 랜덤으로 생성된 숫자를 double[] 형으로 받았다.
+
+RList l = c.eval("lowess(x,y)").asList(); **double**[] lx = l.at("x").asDoubles();String[] ly = l.at("y").asStrings();
+
+<w:wrap type="none"></w:wrap><w:anchorlock></w:anchorlock>
+
+R에서 lowess를 통하여 처리된 데이터프레임 형태의 데이터를 받아서 double[] lx와 String[] ly로 받아 들여 Java에서 사용할 수 있다. 만약 Java에서 이차원 배열 형태로 사용 하고 싶을 경우에는 다음과 같이 사용 할 수 있다.
+
+RList l = c.eval("{d=data.frame(\"TestData\",c(11:20)); lapply(d,as.character)}").asList(); **int** cols = l.size();**int** rows = l.at(0).length(); String[][] s = **new** String[cols][]; **for** (**int** i = 0; i < cols; i++) {        s[i] = l.at(i).asStrings();}
+
+<w:wrap type="none"></w:wrap><w:anchorlock></w:anchorlock>
+
+String[][]의 객체의 사이즈를 미리 만들어 놓고 RList의 데이터를 배열에 주입 하는 방법이다.
+
+**5.4  전체 소스**
+
+```java
+public class RServeExample1 {
+        private RConnection c = null;
+        public RServeExample1() throws RserveException {
+               c = new RConnection();
+        }
+        private void getRVersion() throws RserveException, REXPMismatchException {
+               REXP x = c.eval("R.version.string");
+               System.out.println("R version : " + x.asString());
+        }
+
+        private void getDoubles() throws RserveException, REXPMismatchException {
+               REXP x = c.eval("rnorm(100)");
+               double[] d = x.asDoubles();
+            
+               for (int i = 0; i < d.length; i++) {
+                       System.out.println(d[i]);
+               }
+        }
+
+
+        private void getDataFrame1() throws REngineException, REXPMismatchException {
+               double[] dataX = { 10, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+               double[] dataY = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+
+               c.assign("x", dataX);
+               c.assign("y", dataY);
+              
+               RList l = c.eval("lowess(x,y)").asList();
+               double[] lx = l.at("x").asDoubles();
+               String[] ly = l.at("y").asStrings();             
+               for (int i = 0; i < lx.length; i++) {
+                       System.out.println(lx[i]);
+               }
+                            System.out.println("==============================");
+
+              
+               for (int i = 0; i < ly.length; i++) {
+                       System.out.println(ly[i]);
+               }      
+        }
+        private void getDataFrame2() throws RserveException,REXPMismatchException {      
+               RList l = c.eval("{d=data.frame(\"TestData\",c(11:20));
+lapply(d,as.character)}").asList();
+
+               int cols = l.size();
+               int rows = l.at(0).length();
+               String[][] s = new String[cols][]; 
+
+               for (int i = 0; i < cols; i++) {
+                       s[i] = l.at(i).asStrings();
+               }             
+               for (int i = 0; i < cols; i++) {
+                       for (int j = 0; j < rows; j++) {                             System.out.println(s[i][j]);
+
+                       }
+               }
+        }      
+
+ 
+
+        public static void main(String[] args) throws REXPMismatchException,
+
+REngineException {
+               RServeExample1 RServeExample = new RServeExample1();
+
+               System.out.println("------------버젼 가져오기--------------");
+
+               RServeExample.getRVersion();
+
+               System.out.println("------------더블 데이터 가져오기-------------");
+
+               RServeExample.getDoubles();          
+
+               System.out.println("------------데이터 주입 연산후 가져오기------");
+
+               RServeExample.getDataFrame1();
+
+               System.out.println("------------데이터 생성 연산후 가져오기------");
+
+               RServeExample.getDataFrame2();
+
+        }
+
+}
+```
+
+- 사용예제
+
+  R
+
+  ```R
+  a1 <- function(){
+    result <- c(1,2,3,4,5)
+    return(result)
+  }
+  a2 <- function(){
+    result <- c(3,4,5,4,5)
+    return(result)
+  }
+  a3 <- function(){
+    result <- c(7,8,9,4,5)
+    return(result)
+  }
+  
+  
+  func1 <- function(x){
+    if(x == 10){
+      return(a1())      
+    }else if(x == 20){
+      return(a2())
+    }else if(x == 30){
+      return(a3())
+    }else{
+      
+    }
+  }
+  ```
+
+  JAVA
+
+  ```java
+  package r;
+  
+  import org.rosuda.REngine.REXP;
+  import org.rosuda.REngine.REXPMismatchException;
+  import org.rosuda.REngine.Rserve.RConnection;
+  import org.rosuda.REngine.Rserve.RserveException;
+  
+  public class RTest {
+  
+  	public static void main(String[] args) throws REXPMismatchException {
+  		RConnection rconn = null;
+  		int arg = 10;
+  		try {
+  			rconn = new RConnection("192.168.0.103");
+  			rconn.setStringEncoding("utf8");
+  			rconn.eval("source('C:/R/day04/f2.R',encoding='UTF-8')");
+  			REXP rexp = rconn.eval("func1("+arg+")");
+  			int result[] = rexp.asIntegers();
+  			
+  			for(int i : result) {
+  				System.out.println(i);
+  			}
+  			
+  		} catch (RserveException e) {
+  			e.printStackTrace();
+  		}
+  		System.out.println("Connection Complete !");
+  		
+  		rconn.close();
+  	}
+  
+  }
+  ```
+
+  
+
+## R 에서 Google Map 동작
+
+1. Package 설치
+
+\- Git에서 받아서 설치 진행
+
+https://cran.r-project.org/bin/windows/Rtools/history.html
+
+
+
+install.package("devtools")
+
+library(devtools)
+
+install_github("dkahle/ggmap")
+
+
+
+
+
+2. 아래와 같이 진행
+
+library(ggmap)
+
+library(ggplot2)
+
+googleAPIkey = "AIzaSyCf0OaMj_2ZLeKlOZO2alwc685pjyRf-Gs"
+
+register_google(googleAPIkey)
+
+mm <- get_googlemap("mapogu",maptype = "roadmap", zoom=12)
+
+ggmap(mm)
