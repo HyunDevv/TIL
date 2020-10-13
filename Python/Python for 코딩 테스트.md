@@ -207,6 +207,8 @@
 
 ##  조건문
 
+- 파이썬에서는 **코드의 블록을 들여쓰기로 지정**
+
 ```python
 a = 10
 
@@ -222,3 +224,147 @@ else:
 print("끝")
 ```
 
+
+
+- 비교연산자
+
+- 논리연산자
+
+  - X and Y
+  - X or Y
+  - not X
+
+- 여러 개의 데이터를 담는 자료형을 위해 `in` 연산자와 `not in` 연산자가 제공된다
+
+  - 리스트, 튜플, 문자열, 딕셔너리 모두 사용 가능
+
+- pass
+
+  ```python
+  a = 10
+  
+  if a > 5:
+      pass    # 나중에 작성할 코드 혹은 비워둘때
+  else:
+      print("else")
+  ```
+
+  
+
+## 반복문
+
+- while
+
+  ```python
+  i = 1
+  result = 0
+  
+  # i가 9보다 작거나 같은 때 아래 코드를 반복적으로 실행
+  while i <= 9:
+      result += i
+      i += 1
+      
+  print(result)
+  ```
+
+- for
+
+  - range()의 인자를 하나만 넣으면 자동으로 시작 값은 0이 된다
+
+  ```python
+  result = 0
+  
+  # i는 1부터 9까지의 모든 값을 순회
+  for i in range(1, 10):
+      result += i
+      
+  print(result)
+  ```
+
+  ```python
+  for i in range (1, 100, 3):   #3칸씩 띄면서 반복
+      print(i)                  #1,4,7,10,...
+  ```
+
+  ```python
+  scores = [90, 85, 77, 65, 97]
+  cheating_student_list = {2,4}
+  
+  for i in range(5):
+      if i + 1 in cheatng_student_list:
+          continue
+      if scores[i] >= 80:
+          print(i + 1,"번 학생은 합격입니다.")
+  ```
+
+  
+
+## 함수
+
+```python
+def add(a ,b):
+	return a + b
+	
+print(add(3, 7))
+```
+
+```python
+def add(a ,b):
+	return a + b
+	
+print(add(b = 3,a = 7))
+```
+
+```python
+a = 8
+
+def func():
+	global a     # a가져올 떄 사용 / 리스트는 global 필요없다
+    a += 7
+    
+func()
+print(a)
+```
+
+
+
+- 파이썬에서 함수는 여러 개의 반환 값을 가질 수 있다
+
+```python
+def operator(a, b):
+    return a+b, a-b, a*b, a/b
+
+a, b, c, d = operator(3, 7)
+```
+
+## 람다
+
+> 함수를 매우 간단하게 작성할 수 있다
+
+```python
+print((lambda a, b: a + b)(3, 5))
+```
+
+```python
+list1 = [1,2,3,4,5]
+list2 = [6,7,8,9,10]
+
+result = list(map(lambda a, b: a + b, list1, list2)) 
+print(result)               # [7,9,11,13,15]
+```
+
+
+
+![image-20201013221631110](md-images/image-20201013221631110.png)
+
+<img src="md-images/image-20201013221842800.png" alt="image-20201013221842800" style="zoom:50%;" />
+
+![image-20201013221919584](md-images/image-20201013221919584.png)
+
+![image-20201013222006018](md-images/image-20201013222006018.png)
+
+![image-20201013222147757](md-images/image-20201013222147757.png)
+
+![image-20201013222203663](md-images/image-20201013222203663.png)
+
+![image-20201013222242484](md-images/image-20201013222242484.png)
