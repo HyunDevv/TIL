@@ -22,5 +22,9 @@ https://swexpertacademy.com/main/userpage/code/userSubmitProblem.do?userId=AXUnF
 
 - 달팽이 숫자 : 개인적으로 어려웠다.. 포인트는 방향에 따른 증감 movex=(0,1,0,-1)   /  movey=(1,0,-1,0)을 표현할 수 있는가 하고
   좌표가 범위 밖으로 나가거나 혹은 값이 0이 아닌 자리를 접근하려 할 때 방향을 바꿀 수 있는가 이다
-
+  
 - 패턴 마디의 길이 : asad/asad 이렇게 반복되는걸 주의하자!
+
+- 준환이의 운동관리
+
+- [S/W 문제해결 기본] 1일차 - View
