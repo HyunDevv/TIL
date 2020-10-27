@@ -482,3 +482,203 @@ public class Test3 {
 
 
 
+## 네트워킹
+
+- 네트워킹 : 두 대 이상의 컴퓨터를 케이블로 연결하여 네트워크를 구성하는 것
+- 자바에서는 java.net 패키지를 사용하면 네트워크 어플리케이션의 데이터 통신 부분을 쉽게 작성할 수 있다
+
+- 네트워크를 구성할 때 전용서버를 두는 것을 서버기반모델이라 하고 별도의 전용서버없이 각 클라이언트가 서버역할을 동시에 수행하는 것을 P2P모델이라 한다.
+
+
+
+- URL (Uniform Resource Location)
+
+
+
+### 서버에 있는 데이터 가져오기
+
+```java
+package com.http;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+public class Test1 {
+
+	public static void main(String[] args) {
+		String urlstr = "http://192.168.0.103/network/users.jsp";
+		URL url = null;
+		URLConnection con = null;
+		// 여기까지 물리적인 연결이 된 것이다
+		
+		// 데이터를 주고 받으려면 I/O를 열어야 한다
+		InputStream is = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		
+		
+		try {
+			url = new URL(urlstr);
+			con = url.openConnection();
+			System.out.println(con.getContentEncoding());
+			
+			is = con.getInputStream();
+			isr = new InputStreamReader(is,"UTF-8");
+			br = new BufferedReader(isr);
+			
+			String str = "";
+			while((str = br.readLine()) != null) {
+				System.out.println(str);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(br != null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		
+		}
+	}
+
+}
+```
+
+
+
+### 서버에 있는 파일 가져오기
+
+```java
+package com.http;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+// 파일을 받아보자
+public class Test2 {
+
+	public static void main(String[] args) {
+		String urlstr = "http://192.168.0.103/network/mp.mp3";
+		URL url = null;
+		URLConnection con = null;
+		// 여기까지 물리적인 연결이 된 것이다
+		
+		InputStream is = null;
+		BufferedInputStream bis = null;
+		
+		// 내 컴퓨터로 내보낼 준비
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		
+		try {
+			url = new URL(urlstr);
+			con = url.openConnection();
+			is = con.getInputStream();
+			bis = new BufferedInputStream(is,100000000);
+			
+			// 주소를 바꾸고 싶다면 절대경로를 입력해주면 된다
+			fos = new FileOutputStream("newmp.mp3");
+			bos = new BufferedOutputStream(fos);
+			
+			//바이트 단위로 오기 때문에 int로 받는다
+			int data = 0;
+			//파일의 끝까지..
+			while((data = bis.read()) != -1) {
+				//System.out.println(data);
+				bos.write(data);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(bis != null){
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(bos != null){
+				try {
+					bos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		
+		
+		}
+	}
+
+}
+```
+
+
+
+### HttpURLConnection을 사용한 서버로 데이터 전달
+
+```java
+package com.http;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Random;
+
+public class Test3 {
+
+	public static void main(String[] args) throws InterruptedException {
+		String urlstr = "http://192.168.0.103/network/car.jsp";
+		URL url = null;
+		// HttpURLConnection 사용!
+		HttpURLConnection con = null;
+		
+		// 5초에 한 번씩 랜덤 좌표를 전달하는 작업
+		while(true) {
+			//이 안에 전체가 있어야 한다!
+			try {
+				Random rd = new Random();
+				double lat = rd.nextDouble()*100;
+				double lng = rd.nextDouble()*100;
+				url = new URL(urlstr+"?lat="+lat+"&lng="+lng);
+				con = (HttpURLConnection) url.openConnection();
+				con.setReadTimeout(5000); // 5초동안 응답이 없으면 타임아웃
+				con.setRequestMethod("POST"); // 어떤 방식으로 보낼지
+				con.getInputStream();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				con.disconnect();
+			}
+			Thread.sleep(5000);
+
+		}
+
+
+		
+	}
+
+}
+```
+
+- server
+
+![image-20201027111512489](md-images/image-20201027111512489.png)
+
+
+
+### TCP/IP
+
