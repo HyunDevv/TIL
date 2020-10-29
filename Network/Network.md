@@ -682,5 +682,347 @@ public class Test3 {
 
 ### TCP/IP
 
+- server
 
+```java
+package com.chat;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import com.msg.Msg;
+
+public class Server {
+
+	int port;
+	HashMap<String, ObjectOutputStream> maps;
+	
+	ServerSocket serverSocket;
+	
+	
+	public Server() {}
+	public Server(int port) {
+		this.port = port;
+		maps = new HashMap<>();
+	}
+	
+	// 서버소캣을 통해 각각 클라이언트가 접속할 떄 소켓을 만들고 리시버를 작동시킨다
+	public void startServer() throws IOException {
+		serverSocket = new ServerSocket(port);
+		System.out.println("Start Server ...");
+		
+		Runnable r = new Runnable() {
+			
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						Socket socket = null;
+						System.out.println("Ready Server ...");
+						socket = serverSocket.accept();
+						// 접속한 클라의 IPAddress
+						System.out.println(socket.getInetAddress());
+						makeOut(socket);
+						new Receiver(socket).start();
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+
+				} // end while
+			}
+		};
+		
+		new Thread(r).start();
+		
+	}
+	
+	// 각각의 클라가 접속 했을 때 아웃풋 스트림을 만들어서 해쉬맵에 데이터를 집어 넣는 역할
+	public void makeOut(Socket socket) throws IOException {
+		ObjectOutputStream oo;
+		oo = new ObjectOutputStream(socket.getOutputStream());
+		maps.put(socket.getInetAddress().toString(), oo);
+		System.out.println("접속자 수:" + maps.size());
+	}
+	
+	// 스트림을 통해 받은 object를 확인하고 sendmsg에 data를 전달한다
+	class Receiver extends Thread{
+		Socket socket;
+		ObjectInputStream oi;
+		
+		public Receiver(Socket socket) throws IOException {
+			this.socket = socket;
+			oi = new ObjectInputStream(socket.getInputStream());
+		}
+
+		@Override
+		public void run() {
+			while(oi != null) {
+				Msg msg = null;
+				try {
+					msg = (Msg) oi.readObject();
+					if(msg.getMsg().contentEquals("q")) {
+						throw new Exception();
+					}
+					System.out.println(msg.getId()+msg.getMsg());
+					sendMsg(msg);
+				} catch (Exception e) {
+					maps.remove(socket.getInetAddress().toString());
+					System.out.println(socket.getInetAddress()+".. Exited");
+					System.out.println("접속자수:"+maps.size());
+					break;
+				}
+			} // end while
+			
+			try {
+				if(oi != null) {
+					oi.close();
+				}
+				if(socket != null) {
+					socket.close();
+				}
+			}catch(Exception e){
+				
+			}
+			
+		}
+		
+	}
+	
+	// Receiver에서 받은 msg를 Sender를 호출하여 모든 클라에게 전송한다.
+	public void sendMsg(Msg msg) {
+		Sender sender = new Sender();
+		sender.setMsg(msg);
+		sender.start();
+	}
+	
+	// Hashmap의 사용자 정보를 통해 메시지를 전달한다
+	class Sender extends Thread{
+		Msg msg;
+		public void setMsg(Msg msg) {
+			this.msg = msg;
+		}
+		@Override
+		public void run() {
+			Collection<ObjectOutputStream> cols = 
+					maps.values();
+			Iterator<ObjectOutputStream> it =
+					cols.iterator();
+			while(it.hasNext()) {
+				try {
+					it.next().writeObject(msg);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	
+	public static void main(String[] args) {
+		Server server = new Server(5555);
+		try {
+			server.startServer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+}
+
+```
+
+
+
+- client
+
+```java
+package com.chat;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.Scanner;
+
+import com.msg.Msg;
+
+public class Client {
+
+	int port;
+	String address;
+	String id;
+	Socket socket;
+	Sender sender;
+	
+	public Client() {}
+	public Client(String address, int port, String id) {
+		this.address = address;
+		this.port = port;
+		this.id = id;
+	}
+	
+	public void connect() throws IOException {
+		// 소켓이 만들어지는 구간
+		try {
+			socket = new Socket(address,port);
+		} catch (Exception e) {
+			while(true) {
+				try {
+					Thread.sleep(2000);
+					socket = new Socket(address,port);
+					break;
+				} catch (Exception e1) {
+					System.out.println("Retry...");
+				}
+			}
+		}
+	
+		System.out.println("Connected Server:"+address);
+		
+		sender = new Sender(socket);
+		new Receiver(socket).start();
+		
+		sendMsg();
+	
+	}
+	
+	public void sendMsg() throws IOException {
+		Scanner sc = new Scanner(System.in);
+		while(true) {
+			System.out.println("Input msg");
+			String ms = sc.nextLine().trim();
+			Msg msg = new Msg("",id,ms);
+			
+			sender.setMsg(msg);
+			new Thread(sender).start();
+			
+			if(ms.equals("q")){
+				break;
+			}
+		}
+		//sc.close();
+		if(socket != null) {
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Bye....");
+	}
+	
+	class Sender implements Runnable{
+		Socket socket;
+		ObjectOutputStream oo;
+		Msg msg;
+		
+		public Sender(Socket socket) throws IOException {
+			this.socket = socket;
+			oo = new ObjectOutputStream(socket.getOutputStream());
+		}
+		
+		public void setMsg(Msg msg) {
+			this.msg = msg;
+		}
+
+		@Override
+		public void run() {
+			if(oo != null) {
+				try {
+					oo.writeObject(msg);
+				} catch (IOException e) {
+					//e.printStackTrace();
+					try {
+						if(socket != null) {
+							socket.close();	
+						}
+					}catch(Exception e1) {
+						e1.printStackTrace();
+
+					}
+					// 서버가 끊기면 connect를 한다!
+					try {
+						Thread.sleep(2000);
+						connect();
+						//sendMsg();
+						System.out.println("test1");
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+			}
+		}
+		
+	}
+	
+	class Receiver extends Thread{
+		ObjectInputStream oi;
+		public Receiver(Socket socket) throws IOException {
+			oi = new ObjectInputStream(socket.getInputStream());
+		}
+		@Override
+		public void run() {
+			while(oi != null) {
+				Msg msg = null;
+				try {
+					msg = (Msg) oi.readObject();
+					System.out.println(msg.getId()+msg.getMsg());
+				} catch (Exception e) {
+					e.printStackTrace();
+					break;
+				}
+
+			} // end while
+			try {
+				if(oi != null) {
+					oi.close();
+				}
+				if(socket != null) {
+					socket.close();
+				}
+			}catch(Exception e){
+			
+			}
+//			// 서버가 끊기면 connect를 한다!
+//			try {
+//				Thread.sleep(2000);
+//				System.out.println("test2");
+//				connect();
+//				sendMsg();
+//			} catch (Exception e1) {
+//				e1.printStackTrace();
+//			}
+		
+		}
+		
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		Client client = new Client("192.168.0.103",5555,"[Kim]");
+		
+		try {
+			client.connect();
+			//client.sendMsg();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+}
+
+```
 
