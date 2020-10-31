@@ -1,6 +1,6 @@
 # Linux 설치
 
-1. VMWare 설치
+1. VMWare 설치 (https://www.filehorse.com/download-vmware-player/44878/)
 
 
 
