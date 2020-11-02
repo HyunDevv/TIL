@@ -682,7 +682,11 @@ public class Test3 {
 
 ### TCP/IP
 
-- server
+- 아래 그림처럼 구현해보자!!
+
+![image-20201102162302696](md-images/image-20201102162302696.png)
+
+1. TCP/IP server
 
 ```java
 package com.chat;
@@ -869,7 +873,7 @@ public class Server {
 
 
 
-- client
+2. TCP/IP client
 
 ```java
 package com.chat;
@@ -1082,19 +1086,35 @@ public class Client {
 
 <img src="Network/image-20201030170858603.png" alt="image-20201030170858603" style="zoom:50%;" />
 
-- 안드로이드 MainActivity.java
+3. 안드로이드 Mobile Client (MainActivity.java)
 
 ```java
 package com.example.tcpip;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.msg.Msg;
 
 import java.io.IOException;
@@ -1116,6 +1136,8 @@ public class MainActivity extends AppCompatActivity {
 
     Sender sender;
 
+    NotificationManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1125,13 +1147,76 @@ public class MainActivity extends AppCompatActivity {
         et_ip = findViewById(R.id.et_ip);
         et_msg = findViewById(R.id.et_msg);
         port = 5555;
-        address = "192.168.0.28";
+        address = "192.168.0.103";
         id="[JaeHyun]";
 
         new Thread(con).start();
 
+        // FCM사용 (앱이 중단되어 있을 때 기본적으로 title,body값으로 푸시!!)
+        FirebaseMessaging.getInstance().subscribeToTopic("car").
+                addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "FCM Complete...";
+                        if (!task.isSuccessful()) {
+                            msg = "FCM Fail";
+                        }
+                        Log.d("[TAG]", msg);
 
-    }
+                    }
+                });
+
+
+        // 여기서 부터는 앱 실행상태에서 상태바 설정!!
+        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this); // 브로드캐스트를 받을 준비
+        lbm.registerReceiver(receiver, new IntentFilter("notification")); // notification이라는 이름의 정보를 받겠다
+
+    } // end OnCreate
+
+    // MyFService.java의 intent 정보를 BroadcastReceiver를 통해 받는다
+    public BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String title = intent.getStringExtra("title");
+                String control = intent.getStringExtra("control");
+                String data = intent.getStringExtra("data");
+                Toast.makeText(MainActivity.this, title + " " + control + " " + data, Toast.LENGTH_SHORT).show();
+
+
+                // 상단알람 사용
+                manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = null;
+                if (Build.VERSION.SDK_INT >= 26) {
+                    if (manager.getNotificationChannel("ch2") == null) {
+                        manager.createNotificationChannel(
+                                new NotificationChannel("ch2", "chname", NotificationManager.IMPORTANCE_DEFAULT));
+                    }
+                    builder = new NotificationCompat.Builder(context, "ch2");
+                } else {
+                    builder = new NotificationCompat.Builder(context);
+                }
+
+                Intent intent1 = new Intent(context, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(
+                        context, 101, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                builder.setAutoCancel(true);
+                builder.setContentIntent(pendingIntent);
+                //상단바 타이틀 설정
+                builder.setContentTitle(title);
+                //상단바 내용 설정
+                builder.setContentText(control + " " + data);
+                builder.setSmallIcon(R.drawable.a1);
+                Notification noti = builder.build();
+                manager.notify(1, noti);
+            }
+
+        }
+
+    };
+
+
 
     @Override
     public void onBackPressed() {
@@ -1333,6 +1418,372 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+}
+```
+
+
+
+![image-20201102162436203](md-images/image-20201102162436203.png)
+
+4. Admin Browser에서 Client를 호출하기 위한 TCP/IP Client (Spring Web Application)
+
+- main.jsp
+
+```java
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+   $('#iot').click(function(){
+	   var ip = $('#ip').val();
+	   $.ajax({
+         url:"iot.mc?ip="+ip,
+         success:function(data){
+            console.log('Send Complete...');
+         }
+      });
+   });
+   
+   $('#phone').click(function(){
+      $.ajax({
+         url:"phone.mc",
+         success:function(data){
+            //alert('Send Complete...');
+         }
+      });
+   });
+   
+});
+</script>
+</head>
+<body>
+<h1>Main Page</h1>
+<form action="iot.mc" method="post">
+	<input type="text" id="ip" maxlength="50"></input>
+</form>
+<h2><a id="iot" href="#">Send IoT(TCP/IP)</a></h2>
+<h2><a id ="phone" href="#">Send Phone(FCM)</a></h2>
+</body>
+</html>
+```
+
+- MainController.java
+
+```java
+package com.tcpip;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.chat.Client;
+
+@Controller
+public class MainController {
+   
+   Client client;
+   
+   public MainController() {
+      client = new Client("192.168.0.103", 5555, "[WEB]");
+      try {
+         client.connect();
+      } catch (Exception e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+   }
+
+   @RequestMapping("/main.mc")
+   public ModelAndView main() {
+      ModelAndView mv = new ModelAndView();
+      mv.setViewName("main");
+      return mv;
+   }
+   
+
+   @RequestMapping("/iot.mc")
+   public void iot(HttpServletResponse res,HttpServletRequest request) throws IOException {
+      client.sendTarget("/192.168.0.103", "100");
+      String ip = request.getParameter("ip");
+      if(ip != null && !ip.equals("")) {
+    	  System.out.println(ip);
+    	  client.sendTarget(ip, "100");
+    	  System.out.println("IoT Send Start:"+ip);
+      }else {
+    	  System.out.println("IoT Send Start ..");
+      }
+      
+      PrintWriter out = res.getWriter();
+      out.print("ok");
+      out.close();
+   }
+
+   @RequestMapping("/phone.mc")
+   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		URL url = null;
+		try {
+			url = new URL("https://fcm.googleapis.com/fcm/send");
+		} catch (MalformedURLException e) {
+			System.out.println("Error while creating Firebase URL | MalformedURLException");
+			e.printStackTrace();
+		}
+		HttpURLConnection conn = null;
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+		} catch (IOException e) {
+			System.out.println("Error while createing connection with Firebase URL | IOException");
+			e.printStackTrace();
+		}
+		conn.setUseCaches(false);
+		conn.setDoInput(true);
+		conn.setDoOutput(true);
+		conn.setRequestProperty("Content-Type", "application/json");
+
+		// set my firebase server key
+		conn.setRequestProperty("Authorization", "key="
+				+ "AAAAK89FyMY:APA91bGxNwkQC6S_QQAKbn3COepWgndhyyjynT8ZvIEarTaGpEfMA1SPFo-ReN8b9uO21R1OfSOpNhfYbQaeohKP_sKzsgVTxu7K5tmzcjEfHzlgXRFrB1r0uqhfxLp4p836lbKw_iaN");
+
+		// create notification message into JSON format
+		
+		JSONObject message = new JSONObject();
+		message.put("to", "/topics/car");
+		message.put("priority", "high");
+		
+		JSONObject notification = new JSONObject();
+		notification.put("title", "title1");
+		notification.put("body", "body1");
+		message.put("notification", notification);
+		
+		JSONObject data = new JSONObject();
+		data.put("control", "control1");
+		data.put("data", 100);
+		message.put("data", data);
+
+
+		try {
+			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			out.write(message.toString());
+			out.flush();
+			conn.getInputStream();
+			System.out.println("OK...............");
+
+		} catch (IOException e) {
+			System.out.println("Error while writing outputstream to firebase sending to ManageApp | IOException");
+			e.printStackTrace();
+		}
+      
+      
+   }
+}
+```
+
+- Client.java
+
+```java
+package com.chat;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.msg.Msg;
+
+public class Client {
+   int port;
+   String address;
+   String id;
+   Socket socket;
+   Sender sender;
+   
+   public Client() {
+   }
+   public Client(String address, int port, String id) {
+      this.address = address;
+      this.port = port;
+      this.id = id;
+   }
+   
+   public void connect() throws Exception {
+      try {
+         socket = new Socket(address, port);
+      } catch (Exception e) {
+         System.out.println("Retry ...");
+         while (true) {
+            try {
+               Thread.sleep(2000);
+               socket = new Socket(address, port);
+               break;
+            } catch (Exception e1) {
+               System.out.println("Retry ...");
+            }
+         }
+      }
+      
+      System.out.println("Connected Server: " + address);
+      sender = new Sender(socket);
+      //new Receiver(socket).start();
+   }
+   
+   // 이 부분 추가
+   public void sendTarget(String ip, String cmd) {
+      ArrayList<String> ips = new ArrayList<String>();
+      ips.add(ip);
+      Msg msg = new Msg(ips, id, cmd);
+      sender.setMsg(msg);
+      new Thread(sender).start();
+	   }
+   
+   public void sendMsg() {
+      Scanner sc = new Scanner(System.in);
+      while(true) {
+         // 메세지 입력
+         System.out.println("Input msg");
+         String ms = sc.nextLine();
+         Msg msg = null;
+         ArrayList<String> ips = new ArrayList<>();
+         if(ms.equals("w")) {
+            // 귓속말
+            while(true) {
+               System.out.println("Input other Ip");
+               String other = sc.nextLine();
+               if(other.equals("end")) {
+                  break;
+               }
+               ips.add(other);
+            }
+            System.out.println("Input msg");
+            String newms = sc.nextLine();
+            msg = new Msg(ips, id, newms);
+         }else {
+            msg = new Msg(id, ms);
+         }
+         
+         // 메세지 전송
+         sender.setMsg(msg);
+         new Thread(sender).start();
+         
+         if(ms.equals("q")) {
+            break;
+         }
+      }
+      
+      sc.close();
+      if(socket != null) {
+         try {
+            socket.close();
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
+      System.out.println("Exit ..");
+   }
+   
+   class Sender implements Runnable{
+      Socket socket;
+      ObjectOutputStream oo;
+      Msg msg;
+      
+      public Sender(Socket socket) throws Exception {
+         this.socket = socket;
+         oo = new ObjectOutputStream(socket.getOutputStream());
+      }
+      
+      public void setMsg(Msg msg) {
+         this.msg = msg;
+      }
+
+      @Override
+      public void run() {
+         if(oo != null) {
+            try {
+               oo.writeObject(msg);
+            } catch (IOException e) {
+               //e.printStackTrace();
+               try {
+                  if(socket != null) {
+                     socket.close();
+                  }
+               } catch (Exception e2) {
+                  e2.printStackTrace();
+               }
+               
+               try {
+                  Thread.sleep(2000);
+                  connect();
+               } catch (Exception e1) {
+                  e1.printStackTrace();
+               }
+            }
+         }
+      }
+   }
+   
+   class Receiver extends Thread{
+      ObjectInputStream oi;
+      public Receiver(Socket socket) throws IOException {
+         oi = new ObjectInputStream(socket.getInputStream());
+      }
+      
+      @Override
+      public void run() {
+         while (oi != null) {
+            Msg msg = null;
+            try {
+               msg = (Msg) oi.readObject();
+               System.out.println(msg.getId() + msg.getMsg());
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+         } //end while
+         
+         try {
+            if(oi != null) {
+               oi.close();
+            }
+            if(socket != null) {
+               socket.close();
+            }
+         } catch (Exception e) {
+            // TODO: handle exception
+         }
+      }
+      
+   }
+
+   public static void main(String[] args) {
+      Client client = new Client("192.168.0.103", 5555, "[JaeHyun]");
+      try {
+         client.connect();
+         client.sendMsg();
+      } catch (Exception e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+   }
 
 }
 ```
