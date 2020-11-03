@@ -145,3 +145,28 @@ displayName = "CentOS2" 을 변경 한다.
 \- "Play Virtual Machine" 실행 
 
 \- 반드시 IP 변경
+
+
+
+---
+
+##  브릿지로 실제 IP할당받기
+
+1. ![000](md-images/000.PNG)
+
+
+
+2. ![111](md-images/111.PNG)
+3. ![222](md-images/222.PNG)
+
+
+
+4. ![333](md-images/333-1604314947830.PNG)
+
+5. ![444](md-images/444.PNG)
+
+6. ![555](md-images/555.PNG)
+
+7. ![666](md-images/666.PNG)
+
+   
