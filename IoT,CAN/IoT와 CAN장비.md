@@ -11,3 +11,13 @@
 
 
 ![image-20201103170618304](IoT%EC%99%80%20CAN%EC%9E%A5%EB%B9%84/image-20201103170618304.png)
+
+
+
+## java와 cam 연동하기
+
+RXTXcomm.jar 와 dll파일 다운받기
+
+Copy RXTXcomm.jar ---> java/jre.../lib
+Copy rxtxSerial.dll ---> java/jre.../bin
+Copy rxtxParallel.dll ---> java/jre.../bin
