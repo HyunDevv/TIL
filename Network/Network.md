@@ -2051,3 +2051,13 @@ public class Client {
 %>
 ```
 
+
+
+
+
+- Upgrade 및 네트워크 세미 프로젝트 :
+  - server : network/day05
+  - client : Network2/iot/com.chat
+  - can : Network2/iot/com.can
+  - android : TCPIP
+  - spring : tcpip1
