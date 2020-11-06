@@ -9,3 +9,4 @@ cp -r eclipse /usr/local
 cd /usr/bin
 
 ln -s /usr/local/eclipse/eclipse eclipse
+

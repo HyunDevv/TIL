@@ -10,7 +10,7 @@ cd /usr/local/apache-tomcat-xx
 
 cd conf
 
-vi server.xml - 69 -> 80 port
+vi server.xml - 69번쨰줄 8080 -> 80 port
 
 cd /usr/bin
 

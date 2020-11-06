@@ -4,6 +4,14 @@
 
 ![image-20201103163251782](C:%5CUsers%5Ci%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201103163251782.png)
 
+![11111](md-images/11111.PNG)
+
+
+
+
+
+
+
 
 
 - Serial Port로 연결 된다!
