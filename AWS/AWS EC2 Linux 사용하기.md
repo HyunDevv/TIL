@@ -46,11 +46,15 @@ https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-linux-2-install-gu
 
   ![image-20201106200401441](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106200401441.png)
 
+- GUI VNC Server 실행 : ssh -L 5901:localhost:5901 -i aws_123.pem ec2-user@52.78.222.246
+
 
 
 5. vncviewer 설치
 
 ![image-20201106200006047](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106200006047.png)
+
+- 접속 : localhost: 1
 
 ---
 
