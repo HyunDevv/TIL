@@ -31,3 +31,7 @@ ls
 starttomcat
 
 /usr/local/[apache-tomcat-9.0.37/webapps/](http://apache-tomcat-9.0.37/webapps/)에 자동으로 ROOT 를 생성
+
+
+
+포트확인 : netstat -tuple

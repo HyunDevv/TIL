@@ -48,6 +48,8 @@ https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-linux-2-install-gu
 
 - GUI VNC Server 실행 : ssh -L 5901:localhost:5901 -i aws_123.pem ec2-user@52.78.222.246
 
+- 서버시작 : vncserver :1
+
 
 
 5. vncviewer 설치
@@ -87,3 +89,9 @@ vi /home/ec2-user/eclipse/java-2020-06/eclipse/eclipse.ini
 -vm (jdk 경로) . . . -Xms256m -Xmx256m
 
 ![img](https://cafeptthumb-phinf.pstatic.net/MjAyMDExMDJfMTMy/MDAxNjA0MzEwNjcyNjc3.II1pL1dylmWDGYtqMS0Tvp14ZjtWkLRuVEY2WSjovKEg.DjfdY41ciOw5cn6heuC1v5LFQFXcFVvjnu2_GIMe7x8g.PNG/image.png?type=w1600)
+
+---
+
+## AWS 로컬 Oracle DB를 AWS RDS로 옮기기
+
+https://velog.io/@dsunni/%EB%A1%9C%EC%BB%AC-Oracle-DB%EB%A5%BC-AWS-RDS%EB%A1%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0
