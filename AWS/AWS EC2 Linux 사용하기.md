@@ -10,7 +10,7 @@
 
 2. 지역 서울로 변경
 
-![img](https://cafeptthumb-phinf.pstatic.net/MjAyMDExMDJfMjQ3/MDAxNjA0MzA3NDA1MDMz.R1p9PAFflVQ87cutLhaCXvPS8tv7lK4Ag7OzKVaM1hEg.EbiBrrFdQLw-a0xwOFUwv8mGeuEE6k_tavPHhMfENPcg.PNG/image.png?type=w1600)
+
 
 
 
@@ -26,11 +26,11 @@ EC2 Linux 인스턴스 시작하기
 
 - 보안의 인바운드 규칙 - 보안그룹 - SSH/TCP/22/모든곳  설정할것! 
 
-![image-20201106194517045](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106194517045.png)
+![image-20201106194517045](md-images/image-20201106194517045.png)
 
 - 키의 권한설정 확인하기!
 
-![image-20201106195038472](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106195038472.png)
+![image-20201106195038472](md-images/image-20201106195038472.png)
 
 
 
@@ -44,17 +44,21 @@ https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-linux-2-install-gu
 
   - 윈도우 - 앱 및 기능 - 선택적 기능 - OpenSSH 확인!
 
-  ![image-20201106200401441](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106200401441.png)
+  ![image-20201106200401441](md-images/image-20201106200401441.png)
 
-- GUI VNC Server 실행 : ssh -L 5901:localhost:5901 -i aws_123.pem ec2-user@52.78.222.246
+- key 위치로 이동 : cd C:\Key\AWS
+
+- GUI VNC Server 실행 : ssh -L 5901:localhost:5901 -i aws_123.pem ec2-user@15.165.195.250
 
 - 서버시작 : vncserver :1
+
+- 포트확인 : netstat -tlnp
 
 
 
 5. vncviewer 설치
 
-![image-20201106200006047](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201106200006047.png)
+![image-20201106200006047](md-images/image-20201106200006047.png)
 
 - 접속 : localhost: 1
 
@@ -88,7 +92,7 @@ vi /home/ec2-user/eclipse/java-2020-06/eclipse/eclipse.ini
 
 -vm (jdk 경로) . . . -Xms256m -Xmx256m
 
-![img](https://cafeptthumb-phinf.pstatic.net/MjAyMDExMDJfMTMy/MDAxNjA0MzEwNjcyNjc3.II1pL1dylmWDGYtqMS0Tvp14ZjtWkLRuVEY2WSjovKEg.DjfdY41ciOw5cn6heuC1v5LFQFXcFVvjnu2_GIMe7x8g.PNG/image.png?type=w1600)
+![img](md-images/image.png)
 
 ---
 

@@ -34,4 +34,4 @@ starttomcat
 
 
 
-포트확인 : netstat -tuple
+포트확인 : netstat -tlnp
