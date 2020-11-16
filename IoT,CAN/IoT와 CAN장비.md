@@ -22,7 +22,7 @@
 
 
 
-## java와 cam 연동하기
+## java와 can 연동하기
 
 RXTXcomm.jar 와 dll파일 다운받기
 

@@ -56,6 +56,30 @@ https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-linux-2-install-gu
 
 
 
+- 세미프로젝트 tcpip서버 실행
+
+  : cd /home/ec2-user/Downloads/tcpipServer/src/com/tcpip
+    java -cp . com/tcpip/Server
+
+- 크롬 한글 설정
+
+![image-20201115212547790](md-images/image-20201115212547790.png)
+
+```bash
+sudo yum install -y fonts-korean
+fc-cache -r
+
+cd /usr/share/fonts/
+sudo wget http://cdn.naver.com/naver/NanumFont/fontfiles/NanumFont_TTF_ALL.zip
+sudo unzip NanumFont_TTF_ALL.zip -d NanumFont
+sudo rm -f NanumFont_TTF_ALL.zip
+fc-cache -r
+```
+
+
+
+
+
 5. vncviewer 설치
 
 ![image-20201106200006047](md-images/image-20201106200006047.png)

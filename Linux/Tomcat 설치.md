@@ -35,3 +35,4 @@ starttomcat
 
 
 포트확인 : netstat -tlnp
+
