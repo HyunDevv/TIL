@@ -28,3 +28,9 @@ FileWriter f1 = new FileWriter("data.txt")
   - static이 없으면 instance를 만들어야 사용가능하다
 
   ![image-20200926172559763](C:%5CUsers%5CMaster%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200926172559763.png)
+
+
+
+## static과 하나의 객체만을 생성을 강제하는 싱글톤 패턴
+
+https://wikidocs.net/228
