@@ -36,3 +36,7 @@ starttomcat
 
 포트확인 : netstat -tlnp
 
+
+
+리눅스에서 톰캣 콘솔 로그보기 : tail -F 10 /home/ec2-user/apache-tomcat-9.0.39/logs/catalina.out
+
