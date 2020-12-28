@@ -1,2 +1,1 @@
-[git](C:\Users\Master\Desktop\TIL\git)
-
+내가 배운것을 기록합니다!

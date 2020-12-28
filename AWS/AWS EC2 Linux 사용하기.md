@@ -6,13 +6,7 @@
 
 
 
-
-
 2. 지역 서울로 변경
-
-
-
-
 
 
 
@@ -53,6 +47,8 @@ https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-linux-2-install-gu
 - 서버시작 : vncserver :1
 
 - 포트확인 : netstat -tlnp
+
+- 리눅스에서 톰캣 콘솔 로그보기 : tail -F 10 /home/ec2-user/apache-tomcat-9.0.39/logs/catalina.out
 
 
 
