@@ -654,4 +654,57 @@ math.sqrt( x )
 - 리트스를 문자열로 만드는 함수 : `''.join(lsit)`  (``안의 내용으로 구분)
   ```
 
- 
+---
+
+## 달팽이문제
+
+달팽이를 만들고 타겟이 몇행 몇열인지 출력하시오
+
+```py
+dy = [1,0,-1,0]
+dx = [0,1,0,-1]
+
+n, target = map(int, input().split())
+x,y,d = 0,0,0
+xy = [[0] * n for _ in range(n)]
+xy[0][0] = 1
+
+for i in range(2, n * n + 1):
+    print("i"+str(i))
+
+    if x+dx[d] >= n or y+dy[d] >= n: 
+        print("1")
+        d += 1
+        if d == 4:
+            d = 0      
+        x = x + dx[d]
+        y = y + dy[d]
+        xy[x][y] = i 
+
+    else:
+        print(xy)
+        if xy[x+dx[d]][y+dy[d]] != 0:
+            print("2")
+            d += 1
+            if d == 4:
+                d = 0  
+
+            x = x + dx[d]
+            y = y + dy[d]
+            xy[x][y] = i 
+        else:
+            x = x + dx[d]
+            y = y + dy[d]
+            xy[x][y] = i 
+        
+    print("x:"+str(x)+" y:"+str(y)+"="+str(xy[x][y])+" d="+str(d))
+    
+        
+print(xy)
+
+for i in range(n):
+    for j in range(n):
+        if xy[i][j] == target:
+            print(str(x+1)+" "+str(y+1))
+```
+
