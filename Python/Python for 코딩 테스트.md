@@ -659,6 +659,86 @@ math.sqrt( x )
 - 리트스를 문자열로 만드는 함수 : `''.join(lsit)`  (``안의 내용으로 구분)
   ```
 
+.title() 함수
+
+문자열의 첫 글자를 대문자로 만들어준다
+
+
+
+filer 함수
+
+filter(None, lst) 사용 시 lst의 0, ' ', False를 제거한다
+
+``` python
+def compact(lst):
+    return list(filter(None, lst))
+
+compact([0,1,False,2,'',3,'a',34]) # [1,2,3,'a',34]
+```
+
+
+
+.count('x', s, e)
+
+s ~ e 인덱스까지 x가 몇개 있는지
+
+
+
+오른쪽에서 슬라이싱
+
+``` py
+def drop_right(a, n = 1):
+	return a[:-n]
+
+drop_right([1,2,3]) # [1, 2]
+drop_right([1,2,3], 2) $ [1]
+```
+
+
+
+n의 배수마다 슬라이싱(뽑아내기)
+
+``` py
+def every_nth(lst, nth):
+	return lst[nth - 1::nth]
+
+every_nth([1,2,3,4,5,6], 2) # [2, 4, 6]
+```
+
+
+
+중복인 아이템 제거하기 / 고유한 값만 가져오기 (count > 1)
+
+```py
+from collections import Counter
+
+def filter_non_unique(lst):
+	return [item for item, count in Counter(lst).items() if count == 1]
+	
+filter_non_unique([1, 2, 2, 3, 4, 4, 5]) # [1, 3, 5]
+```
+
+
+
+.index 함수
+
+리스트의 인덱스를 반환한다
+
+
+
+가장 많이 있는 값 가져오기
+
+``` py
+def most_frequent(list):
+	return max(set(list), key=list.count)
+
+most_frequent([1,2,1,2,3,2,1,4,2]) #2
+```
+
+
+
+
+
 ---
 
 ## 달팽이문제
