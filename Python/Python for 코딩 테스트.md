@@ -793,3 +793,12 @@ for i in range(n):
             print(str(x+1)+" "+str(y+1))
 ```
 
+
+
+## 2차원 배열 정렬
+
+![image-20210125151216307](md-images/image-20210125151216307.png)
+
+## 딕셔너리 정렬
+
+![image-20210125151452705](md-images/image-20210125151452705.png)
