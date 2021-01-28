@@ -2,6 +2,10 @@
 
 - 코딩 테스트 문제에서 시간제한은 통상 1 ~ 5초가량이다
 
+## 파이썬의 특징
+
+![image-20210128104002990](md-images/image-20210128104002990.png)<img src="md-images/image-20210128104138383.png" alt="image-20210128104138383" style="zoom:50%;" /><img src="md-images/image-20210128104258257.png" alt="image-20210128104258257" style="zoom:50%;" />
+
 
 
 ## 자료형
