@@ -128,6 +128,8 @@
   - 튜플은 한 번 선언된 값을 변경할 수 없습니다
   - 소괄호를 이용합니다
 
+  
+
 - 사전(딕셔너리)
 
   - 키와 값의 쌍을 데이터로 가지는 자료형
@@ -806,3 +808,23 @@ for i in range(n):
 ## 딕셔너리 정렬
 
 ![image-20210125151452705](md-images/image-20210125151452705.png)
+
+## 부분집합 구하기
+
+```py
+# 1 ~ 13 부분집합구하기
+num = [i for i in range(1, 13)]
+Len = len(num)
+
+# 부분집합 구하기
+# 부분집합을 리스트에 다 담음
+lst = []
+for i in range(1 << Len):
+    sub_lst = []
+    for j in range(Len):
+        if i & (1 << j):
+            sub_lst.append(num[j])
+    lst.append(sub_lst)
+print(lst)
+```
+
