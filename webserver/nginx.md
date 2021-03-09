@@ -217,3 +217,19 @@ https://extrememanual.net/1854
 ## window nginx PHP 연동 및 서비스 등록 방법
 
 https://extrememanual.net/13105
+
+
+
+---
+
+## nginx 서버 실행 명령어
+
+| start nginx  nginx -s stop | start nginx server fast shutdown                             |
+| -------------------------- | ------------------------------------------------------------ |
+| nginx -s quit              | graceful shutdown                                            |
+| nginx -s reload            | changing configuration, starting new worker processes with a new configuration, graceful shutdown of old worker processes |
+| nginx -s reopen            | re-opening log files                                         |
+
+
+
+출처: https://schrodingermemory.tistory.com/7 [The Memory of Shrodinger]

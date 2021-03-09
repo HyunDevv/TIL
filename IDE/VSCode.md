@@ -28,6 +28,6 @@
 
 https://okayoon.tistory.com/entry/%ED%9A%8C%EC%82%AC%EC%97%90%EC%84%9C-%EC%93%B0%EB%8D%98-%ED%99%98%EA%B2%BD-%EA%B7%B8%EB%8C%80%EB%A1%9C-VSCode-%EB%8F%99%EA%B8%B0%ED%99%94%ED%95%98%EA%B8%B0gistsettings-sync-%EC%84%A4%EC%A0%95-%EB%8F%99%EA%B8%B0%ED%99%94
 
-token : 348326ace6c435fef3774a250b6faff9436a660e
+token : 3d10a01ff2651c5c6cb9b0feb5d53ef1dc70d989
 
 Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기에서도 설정을 다운받으려면 이 ID를 복사해서 사용하세요.
