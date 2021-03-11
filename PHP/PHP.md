@@ -201,6 +201,13 @@ PHP.ini에서
 - file_get_contents("경로")
 - var_dump(1)      //  int(11) : 데이터타입을 알려준다 
 - scandir($directory) : 폴더에 들어있는 파일 이름이 배열로 제공
+- 리다이렉션 : header('Location: /index.php?id='.$_POST['title']);
+- file_put_contents('data/'.$_POST['title'], $_POST['description']);     :     어디에 뭐로 저장
+- <?php echo $_GET['id']; ?> == <?=$_GET['id']?>
+- rename("old.txt", "new.txt");
+- unlink('test.html');
+- require('lib/print.php');
+- require_once('lib/print.php');
 
 
 
@@ -245,6 +252,8 @@ array(
 
 )
 
+
+
 $nums = array('0', '1', '2', '3');
 
 
@@ -255,6 +264,67 @@ $nums = array('0', '1', '2', '3');
 - print_r : 변수에 대해 사람이 읽을 수 있는 정보를 출력
 
 
+
+## 함수
+
+function basic(){
+
+}
+
+basic();
+
+
+
+function sum($left, $right){
+
+​	return %left+$right;
+
+}
+
+sum(1,2);
+
+
+
+## form
+
+form.html
+
+```html
+<!doctype html>
+<html>
+    <body>
+        <form action="form.php">
+            <p><input type="text" name="title" placeholder="Title"></p>
+            <p><textarea name="description"></textarea></p>
+            <p><input type="submit"></p>
+        </form>
+    </body>
+</html>
+```
+
+
+
+form.php
+
+```php
+<?php
+file_put_contents('data/'.$_POST['title'], $_POST['description']);
+echo "<p>title : ".$_POST['title']."</p>";
+echo "<p>description : ".$_POST['description']."</p>";
+?>
+```
+
+
+
+## 보안 XSS
+
+htmlspecialchars()
+
+strip 태그 : 특정 태그만 사용할 수 있도록 혀용한다.
+
+## 보안 파일 경로 보호
+
+basename() : 파일 경로에서 파일 이름만 추출해주는 함수 / 주소가 아닌 파일명만 입력 할 수 있게 한다.
 
 
 
