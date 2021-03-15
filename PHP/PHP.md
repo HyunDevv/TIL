@@ -191,31 +191,38 @@ PHP.ini에서
 
 ---
 
-## PHP 함수
+## PHP 함수 및 변수
 
 - echo "blabla"
 - print()
 - echo "Hello"."world"       // Hello world
 - strlen("Hello world")     : 몇글자인지
 - nl2br : 텍스트 내의 줄바꿈을 인식하여 적용시켜주는 함수이다
-- file_get_contents("경로")
 - var_dump(1)      //  int(11) : 데이터타입을 알려준다 
 - scandir($directory) : 폴더에 들어있는 파일 이름이 배열로 제공
 - 리다이렉션 : header('Location: /index.php?id='.$_POST['title']);
-- file_put_contents('data/'.$_POST['title'], $_POST['description']);     :     어디에 뭐로 저장
+- file_get_contents("경로");
+- file_put_contents('data/'.$\_POST['title'], $_POST['description']);     :     어디에 뭐로 저장
 - <?php echo $_GET['id']; ?> == <?=$_GET['id']?>
 - rename("old.txt", "new.txt");
 - unlink('test.html');
 - require('lib/print.php');
 - require_once('lib/print.php');
-
-
+- fopen : 파일을 열어 작업한다 (읽기,쓰기 가능)
+- getcwd() : 현재 실행되고 있는 파일의 폴더명을 알려준다
+- chdir('../') : 주어진 경로로 폴더를 바꾼다
+- scandir('주소') : 해당 주소의 디렉토리를 검색한다
+- mkdir("디렉토리이름", 권한, 경로설정);
+- $_FILES
 
 - 변수는 $로 시작한다.
 - Url parameter :
   $_GET['name'] , $\_GET['address']   :  url.php**?**name=blabla**&**address=서울
+- 파일 업로드
+  ![image-20210315133625936](PHP/image-20210315133625936.png)
+- move_uploaded_file(파일의 경로, 이동 경로) : 임시디렉토리에서 파일디렉토리로 이동
 
-
+- exit; : 더 이상 php문을 실행하지 않고 종료시킨다.
 
 ## PHP 제어문
 
