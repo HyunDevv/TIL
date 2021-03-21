@@ -16,6 +16,12 @@
 
 
 
+**윈도우 nginx php 설치**
+
+https://extrememanual.net/13105
+
+
+
 
 
 
