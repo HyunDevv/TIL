@@ -191,7 +191,7 @@ PHP.ini에서
 
 ---
 
-## PHP 함수 및 변수
+## PHP 내장함수 및 변수
 
 - echo "blabla"
 - print()
@@ -214,15 +214,14 @@ PHP.ini에서
 - scandir('주소') : 해당 주소의 디렉토리를 검색한다
 - mkdir("디렉토리이름", 권한, 경로설정);
 - $_FILES
-
 - 변수는 $로 시작한다.
 - Url parameter :
   $_GET['name'] , $\_GET['address']   :  url.php**?**name=blabla**&**address=서울
 - 파일 업로드
   ![image-20210315133625936](PHP/image-20210315133625936.png)
 - move_uploaded_file(파일의 경로, 이동 경로) : 임시디렉토리에서 파일디렉토리로 이동
-
 - exit; : 더 이상 php문을 실행하지 않고 종료시킨다.
+- explode( 경계 문자열  , 나눌 문자열 , 제한 갯수 )
 
 ## PHP 제어문
 
