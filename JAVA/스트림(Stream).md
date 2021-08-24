@@ -64,3 +64,25 @@ stream.distinct().limit(5).sorted().forEach(System.out::println)
 ## 스트림 만들기 - 람다식 iterate(), generate()
 
 ![image-20210823173807734](md-images/image-20210823173807734.png)
+
+
+
+## 스트림의 중간연산
+
+- skip() - 건너뛰기
+- limit() - 자르기
+- filter() - 조건식
+- distinct() - 중복제거
+- sorted() - 정렬
+- map() - 변환
+- peek() - forEach()의 중간연산 버전
+- flatmap() - 변환
+
+
+
+## Optional<T>
+
+- 간접적으로 null을 다룬다
+- 다음이유로 Optional을 사용한다.
+  1. 간접적으로 null을 다루는 것은 위험하다
+  2. null체크, if문 필요, zhemrk 지저분해진다
