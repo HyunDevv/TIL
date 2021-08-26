@@ -86,3 +86,21 @@ stream.distinct().limit(5).sorted().forEach(System.out::println)
 - 다음이유로 Optional을 사용한다.
   1. 간접적으로 null을 다루는 것은 위험하다
   2. null체크, if문 필요, zhemrk 지저분해진다
+
+
+
+## 스트림의 최종연산
+
+- 중간 연산 : Stream을 반환
+- 최종 연산 : Stream 요소를 소모
+
+
+
+- forEach(), forEachOrdered()
+- allMatch() - 모두 만족시키면 true
+- anyMatch() - 하나라도 만족시키면 true
+- noneMatch() - 모두 만족시키지 않아야 true
+- reduce() - 스트림의 요소를 하나씩 줄여가며 누적연산 수행
+- collect() - 
+- findFirst() - 첫 번째 요소를 반환. 순차 스트림에 사용
+- findAny() - 아무거나 하나를 반환. 병렬 스트림에 사용
