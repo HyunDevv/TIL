@@ -1515,7 +1515,47 @@ function getStudentDetails(studentID: number):{
 
 ---
 
+## NodeJS
+
+### URL
+
+![image-20210922133326920](md-images/image-20210922133326920.png)
+
+```javascript
+var http = require('http');
+var fs = require('fs');
+var url = require('url');
+
+var app = http.createServer(function(request,response){
+    var _url = request.url;
+    var queryData = url.parse(_url, true).query;
+	console.log(queryData.id);
+    if(_url == '/'){
+       _url = 'index.html';
+       }
+    if(_url == '/favicon.ico'){
+        return response.writeHead(404);
+    }
+    response.writeHead(200);
+    response.end(queryData.id); 
+});
+app.listen(3000);
+```
+
+
+
+---
+
+## NodeJS 자동 재시작 supervisor
+
+설치 : `npm install supervisor -g`
+
+사용 : `supervisor main.js`
+
+---
+
 ## 출처 
 
 - JavaScript 기초 : https://www.youtube.com/watch?v=KF6t61yuPCY
 - Node.js : https://www.youtube.com/playlist?list=PLuHgQVnccGMA9QQX5wqj6ThK7t2tsGxjm
+
