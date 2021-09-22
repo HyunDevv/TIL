@@ -181,7 +181,7 @@ origin  https://github.com/KimJaeHyun52/TIL.git (fetch)
 origin  https://github.com/KimJaeHyun52/TIL.git (push)
 ```
 
-### 3. push
+### 3. push 
 
 ```bash
 $ git push origin master

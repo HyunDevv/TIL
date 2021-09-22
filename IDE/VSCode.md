@@ -82,6 +82,7 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 - live server
 - markdown preview (vscode 내장설치)
 - autoprefixer : 구버전 css 자동 입력
+- gitlens
 
 
 
