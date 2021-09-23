@@ -1544,9 +1544,26 @@ app.listen(3000);
 
 
 
+### 파일 읽기
+
+```javascript
+var fs = require('fs');
+fs.readFile('sample.txt', 'utf8', function (err, data) {
+  console.log(data);
+});
+```
+
+
+
+
+
+
+
+
+
 ---
 
-## NodeJS 자동 재시작 supervisor
+### NodeJS 자동 재시작 supervisor
 
 설치 : `npm install supervisor -g`
 

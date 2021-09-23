@@ -72,6 +72,7 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 - Korean Language Pack : 한국어 설정
 - Material Theme : 테마설정
 - Material icon theme
+- indent-rainbow
 - Prettier : 포메터
   - c+s+p -> settings (UI) -> save 검색 -> format on save 확인
 - bracket pair colorizer : 괄호색상
