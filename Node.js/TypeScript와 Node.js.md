@@ -119,8 +119,8 @@
 
 
 - 스코프
-  - var : 함수 스코프 ex) if문 안에서 상성 후 밖에서도 사용 가능
-  - let, const : 블록 스코프 ex) if문 안에서 상성 후 밖에서는 사용 불가능
+  - var : 함수 스코프 ex) if문 안에서 생성 후 밖에서도 사용 가능
+  - let, const : 블록 스코프 ex) if문 안에서 생성 후 밖에서는 사용 불가능
 
 
 
@@ -134,7 +134,7 @@
       	console.log(foo); // undefined
       	var foo;
       
-    	console.log(bar); // Error: Uncaught ReferenceError: bar is not defined
+    		console.log(bar); // Error: Uncaught ReferenceError: bar is not defined
       	let bar;
       ```
     ```
@@ -197,6 +197,8 @@ ${name}`
 
 console.log{letter};
 ```
+
+
 
 ### 형변환
 
@@ -385,6 +387,7 @@ const superman = {
 
 // 접근
 superman.name
+superman['name']
 // 추가
 superman.gender = 'male';
 // 삭제
@@ -820,7 +823,7 @@ users.forEach((item, index, arr) =>{
 
 
 // arr.indexOf / arr.lastIndexOf
-let arr = [1,2,3,4,5,1,2,3,];
+let arr = [1,2,3,4,5,1,2,3];
 arr.indexOf(3); // 2
 arr.indexOf(3,3) // 7   2번째 인수는 시작위치를 의미함.
 arr.lastIndexOf(3); // 7   뒤에서 부터 스캔하여 그 인덱스를 반환한다.
@@ -928,6 +931,7 @@ let user3 = users[2];
 let [a,b,c] = [1,2]; // a=1, b=2, c=undefined
 let [a=3, b=4, c=5] = [1,2];
 let [user1, , user2] = ['M', 'T', 'J', 'To'];
+
 // 바꿔치기
 [a, b] = [b, a]
 
@@ -1160,12 +1164,14 @@ const Bmw = function(color){
     this.color = color;
 };
 
+=====================================================================
+    
 Bmw.prototype.wheels = 4;
 Bmw.prototype.drive = function(){
     console.log("drive..");
 }
 
-/* 하단처럼 하면 z4.constructor === Bmw는 false가 된다 so 위 방법선호
+/* 하단처럼 하면 z4.constructor === Bmw는 false가 된다 so 위↑ 방법선호
 Bmw.prototype = {
 	wheels: 4,
 	drive(){
@@ -1173,6 +1179,8 @@ Bmw.prototype = {
 	},
 }
 */
+
+========================================================================
 
 /* 아니면 이렇게 한다
 Bmw.prototype = {
@@ -1304,7 +1312,7 @@ pr.then(
 ```javascript
 const f1 = () => {
     return new Promise((res, rej) => {
-        setTimeour(() => {
+        setTimeout(() => {
             res("1번 주문 완료");
         }, 1000);
     });
@@ -1313,16 +1321,16 @@ const f1 = () => {
 const f2 = (message) => {
     console.log(message);
     return new Promise((res, rej) => {
-        setTimeour(() => {
+        setTimeout(() => {
             res("2번 주문 완료");
         }, 2000);
     });
 };
 
-const f3 = () => {
+const f3 = (message) => {
     console.log(message);
     return new Promise((res, rej) => {
-        setTimeour(() => {
+        setTimeout(() => {
             res("3번 주문 완료");
         }, 1000);
     });
@@ -1354,6 +1362,9 @@ async function order(){
 order();
 
 
+
+
+
 // Promise.all
 console.time("x");
 Promise.all([f1(), f2(), f3()]).then((res) => {
@@ -1371,7 +1382,7 @@ async function orderAll(){
     }
     console.log("끝");
 }
-order();
+orderAll();
     
     
 
@@ -1451,6 +1462,58 @@ showName();
 ![image-20210921205529398](md-images/image-20210921205529398.png)
 
 ![image-20210921210159481](md-images/image-20210921210159481.png)
+
+
+
+### OOP
+
+- js에서는 함수는 값이다!
+
+```javascript
+var f = function(){
+    console.log(1+1);
+    console.log(1+2);
+}
+var a = [f];
+a[0]();
+
+var o = {
+    func: f
+}
+o.func();
+```
+
+- this를 통해 함수가 속해있는 객체를 참조할 수 있다
+
+```javascript
+var q = {
+    v1:'v1',
+    v2:'v2',
+    f1:function(){
+        console.log(this.v1);
+    }
+    f2:function(){
+        console.log(this.v2);
+    }
+}
+
+q.v1();
+q.v2();
+```
+
+
+
+### Modul
+
+
+
+### 보안
+
+- 입력을 통해 경로를 찾아갈때는 항상 보안을 생각해야한다!
+  - var filterdId = path.parse(id).base; 등 을 이용하자!!
+- 출력정보에 대한 보안 (XSS 등)
+  - HTML Entities 찾아보기..
+  - npm sanitize html 검색..
 
 
 
