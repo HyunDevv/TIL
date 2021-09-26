@@ -87,9 +87,7 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 
 
 
-- indent-rainbow
 
-  
 
 ---
 
