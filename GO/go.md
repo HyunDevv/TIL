@@ -332,3 +332,178 @@ func main() {
 }
 ```
 
+
+
+---
+
+```go
+package main
+
+import (
+	"accounts"
+	"fmt"
+)
+
+func main() {
+	account := accounts.NewAccount("nico")
+	account.Deposit(10)
+	err := account.Withdraw(20)
+	if err != nil {
+		// log.Fatalln(err) // err표시와 종료까지 시킴
+		fmt.Println(err)
+	}
+	fmt.Println(account.Balance(), account.Owner())
+	fmt.Println(account)
+}
+```
+
+```go
+package accounts
+
+import (
+	"errors"
+	"fmt"
+)
+
+type Account struct {
+	owner   string
+	balance int
+}
+
+func NewAccount(owner string) *Account {
+	account := Account{owner: owner, balance: 0}
+	return &account
+}
+
+// receiver의 이름은 struct의 앞글자의 소문자로 보통한다
+func (a *Account) Deposit(amount int) {
+	a.balance += amount
+}
+
+func (a Account) Balance() int {
+	return a.balance
+}
+
+var errNoMoney = errors.New("can't withdraw")
+
+func (a *Account) Withdraw(amount int) error {
+	if a.balance < amount {
+		return errNoMoney
+	}
+	a.balance -= amount
+	return nil
+}
+
+func (a *Account) ChangeOwner(newOwner string) {
+	a.owner = newOwner
+}
+
+func (a Account) Owner() string {
+	return a.owner
+}
+
+func (a Account) String() string {
+	return fmt.Sprint(a.Owner(), "'s account.\nHas: ", a.Balance())
+}
+```
+
+
+
+
+
+---
+
+
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"mydict"
+)
+
+func main() {
+	dictionary := mydict.Dictionary{}
+	baseWord := "hello"
+	dictionary.Add(baseWord, "First")
+	err := dictionary.Update(baseWord, "Second")
+	if err != nil {
+		fmt.Println(err)
+	}
+	dictionary.Search(baseWord)
+	dictionary.Delete(baseWord)
+	word, err2 := dictionary.Search(baseWord)
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+	fmt.Println(word)
+}
+```
+
+```go
+package mydict
+
+import "errors"
+
+// Dictionary는 map[string]string에 대한 alias이다.
+type Dictionary map[string]string
+
+var errNotFound = errors.New("not found")
+
+// type은 method를 가질 수 있다.. struct처럼..
+func (d Dictionary) Search(word string) (string, error) {
+	value, exists := d[word]
+	if exists {
+		return value, nil
+	}
+	return "", errNotFound
+}
+
+var errWordExists = errors.New("that word already exists")
+
+func (d Dictionary) Add(word, def string) error {
+	_, err := d.Search(word)
+	// if err == errNotFound {
+	// 	d[word] = def
+	// } else if err == nil {
+	// 	return errWordExists
+	// }
+	switch err {
+	case errNotFound:
+		d[word] = def
+	case nil:
+		return errWordExists
+	}
+	return nil
+}
+
+var errCantUpdate = errors.New("cant update non-existing word")
+
+// 에러모음 go표현
+/*
+var (
+	errNotFound = errors.New("not found")
+	errWordExists = errors.New("that word already exists")
+	errCantUpdate = errors.New("cant update non-existing word")
+)
+*/
+
+func (d Dictionary) Update(word, definition string) error {
+	_, err := d.Search(word)
+	switch err {
+	case nil:
+		d[word] = definition
+	case errNotFound:
+		return errCantUpdate
+	}
+	return nil
+}
+
+func (d Dictionary) Delete(word string) {
+	delete(d, word)
+}
+```
+
