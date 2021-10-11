@@ -1405,7 +1405,7 @@ async function getName(){
 
 console.log(getName()); // Promise {<fulfilled>: "Mike"}
 
-getName().then((name) => {
+getName().then((name) => { 
     console.log(name);  // Mike
 })
 ```
@@ -1544,6 +1544,51 @@ console.log(add('3', '5')) // error
 
 
 
+```typescript
+let cat:string = 'benz';
+let age:number = 30;
+let isAdult:boolean = true;
+let a:number[] = [1,2,3];
+let a2:Array<number> = [1,2,3];
+
+let week1:string[] = ['mon', 'tue', 'wed'];
+let week2:Array<string> = ['mon', 'tue', 'wed'];
+
+// 튜플 (Tuple)
+let b:[string, number];
+b = ['z',1];
+b[0].toLowerCase();
+
+// void, never
+function sayHello():void {
+    console.log('hello');
+}
+function showError():never {
+    throw new Error();
+}
+function infLoop(){
+    while(ture) {
+        // do something..
+    }
+}
+
+// enum
+enum Os {
+    Window,
+    Ios,
+    Android 
+}
+let myOs:Os;
+myOs = Os.Window
+
+let a:null = null;
+let b:undefined = undefined;
+```
+
+
+
+
+
 ### Type Inference (타입추론)
 
 ```typescript
@@ -1567,6 +1612,329 @@ function getStudentDetails(studentID: number):{
     return null;
 }
 ```
+
+
+
+### 인터페이스
+
+```typescript
+type Score = 'A' | 'B' | 'C' | 'F';
+
+interface User {
+    name: string;
+    age: number;
+    gender?: string; // ?는 optional
+    readonly birthYear: number;
+    [grade: number]: Score;
+}
+
+let user: User = {
+    name : 'xx',
+    age : 30,
+    birthYear : 2000,
+    1 : 'A',
+    2 : 'B'
+}
+
+user.age = 10;
+user.gender = 'male'
+// user.birthYear = 1990; 오류
+
+console.log(user.age)
+```
+
+```typescript
+interface Add {
+    (num1: number, num2: number): number;
+}
+
+const add: Add = function(x, y){
+    return x + y;
+}
+
+add(10, 20);
+
+
+interface IsAdult {
+    (age: number): boolean;
+}
+
+const a: IsAdult = (age) => {
+    return age > 19;
+}
+```
+
+``` typescript
+// impletents
+
+interface Car {
+    color: string;
+    wheels: number;
+    start(): void;
+}
+
+interface Toy {
+    name: string;
+}
+
+interface ToyCar extends Car, Toy {
+    price: number;
+}
+
+interface Benz extends Car {
+    door: number;
+    stop(): void;
+}
+
+class Bmw implements Car {
+    color;
+    wheels = 4;
+    constructor(c: string) {
+        this.color = c;
+    }
+    start() {
+        console.log('go...');
+    }
+}
+
+const b = new Bmw('green');
+console.log(b);
+b.start();
+```
+
+
+
+### 함수의 타입
+
+```typescript
+function add(num1: number, num2: number): number {
+    return num1 + num2;
+}
+
+function hello(name?: string) {
+    return `Hello, ${name || "world"}`;
+}
+
+function hello2(name = "world") {
+    return `Hello, ${name}`;
+}
+
+const result = hello();
+const result2 = hello("Sam");
+```
+
+``` typescript
+// 첫 매개변수를 optional로 받고 싶을 때
+// ?는 처음 매개변수에 사용할 수 없다
+function hello(age: number | undefined, name: string): string {
+  if (age !== undefined) {
+    return `Hello, ${name}. You are ${age}.`;
+  } else {
+    return `Hello, ${name}`;
+  }
+}
+
+console.log(hello(30, "Sam"));
+console.log(hello(undefined, "Sam"));
+```
+
+```typescript
+function add(...nums: number[]) {
+  return nums.reduce((result, num) => result + num, 0);
+}
+
+add(1, 2, 3);
+add(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+```
+
+```typescript
+interface User {
+  name: string;
+}
+
+const Sam: User = { name: 'Sam' }
+
+// this의 타입은 항상 첫번째 매개변수로 적는다
+function showName(this: User, age: number, gender: 'm' | 'f') {
+  console.log(this.name, age, gender)
+}
+
+const a = showName.bind(Sam);
+a(30, 'm');
+```
+
+``` typescript
+// 함수 오버로드
+interface User{
+  name: string;
+  age: number;
+}
+
+function join(name: string, age: string): string;
+function join(name: string, age: number): User;
+function join(name: string, age: number | string): User | string {
+  if (typeof age === "number") {
+    return {
+      name,
+      age,
+    };
+  } else {
+    return "나이는 숫자로 입력해주세요.";
+  }
+}
+
+const sam: User = join("Sam", 30);
+const jane: string = join("Jame", "30");
+```
+
+
+
+### 리터럴, 유니온/교차 타입
+
+```typescript
+// Literal Types
+
+const userName1 = "Bob";
+let userName2: string | number = "Tom";
+userName2 = 3;
+
+type Job = "police" | "developer" | "teacher";
+
+interface User {
+  name: string;
+  job: Job;
+}
+
+const user: User = {
+  name: "Bob",
+  job: "developer"
+}
+```
+
+``` typescript
+// Union Types
+
+interface Car {
+  name: "car";
+  color: string;
+  start(): void;
+}
+
+interface Mobile {
+  name: "mobile";
+  color: string;
+  call(): void;
+}
+
+function getGift(gift: Car | Mobile) {
+  console.log(gift.color);
+  // gift.start(); 오류
+  if (gift.name === "car") {
+    gift.start();
+  } else {
+    gift.call();
+  }
+}
+```
+
+``` typescript
+// Intersection Types
+
+interface Car {
+  name: string;
+  start(): void;
+}
+
+interface Toy {
+  name: string;
+  color: string;
+  price: number;
+}
+
+
+const toyCar: Toy & Car = {
+  name: "타요",
+  start() { },
+  color: "bule",
+  price: 1000,
+};
+```
+
+
+
+### 클래스
+
+```typescript
+/*
+접근 제어자 - public, private, protected
+public - 자식 클래스, 클래스 인스턴스 모두 접근 가능
+protected - 자식 클래스에서 접근 가능
+private - 해당 클래스 내부에서만 접근 가능
+*/
+
+class Car {
+  readonly name: string = "car"; // #name을 사용하면 private name과 같음
+  color: string;
+  static wheels = 4;
+  constructor(color: string, name: string) {
+    this.color = color;
+    this.name = name;
+  }
+  start() {
+    console.log("start");
+    console.log(this.name);
+    // console.log(this.wheels); 에러
+    console.log(Car.wheels);
+  }
+}
+
+class Bmw extends Car {
+  constructor(color: string, name: string) {
+    super(color, name);
+  }
+  showName() {
+    console.log(this.name);
+  }
+}
+
+const z4 = new Bmw("black", "zzzz4");
+// console.log(this.wheels); 에러
+console.log(Car.wheels);
+z4.showName();
+// z4.name = "zzzz4" 불가능
+```
+
+``` typescript
+abstract class Car {
+  color: string;
+  constructor(color: string) {
+    this.color = color;
+  }
+  start() {
+    console.log("start");
+  }
+  abstract doSomething(): void;
+}
+
+// const car = new Car("red"); 불가능
+
+class Bmw extends Car {
+  constructor(color: string) {
+    super(color);
+  }
+  doSomething() {
+    alert(3);
+  }
+}
+
+const z4 = new Bmw("black");
+```
+
+
+
+---
+
+
 
 
 
