@@ -1,5 +1,15 @@
 # go
 
+---
+
+## 설치
+
+https://artist-developer.tistory.com/4
+
+---
+
+
+
 - multi-core processing을 사용한다.
 
 - 프로젝트를 다른 디렉토리에 만들 수 없다 -> 무조건 Go PATH 디렉토리에 저장!
