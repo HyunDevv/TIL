@@ -31,3 +31,32 @@
 - 라인 삭제 : ctrl + y
 - 파라미터 정보 : ctrl + p
 
+---
+
+## 터미널 git bash로 바꾸기
+
+### 1. Settings 창 열기
+
+- File -> Settings 또는 Ctrl+Alt+S 단축키 사용
+  ![img](IntelliJ.assets/image.png)
+
+### 2. 왼쪽 메뉴 중 Tools 선택
+
+![img](IntelliJ.assets/image.png)
+
+### 3. 하위 메뉴 중 터미널 선택
+
+![img](IntelliJ.assets/image.png)
+
+### 4. Shell path 변경
+
+Applications Settings -> Shell Path -> 아래와 같이 입력
+
+- "<Git Shell 경로>" -login -i
+- 예시) "C:\Program Files\Git\bin\sh.exe" -login -i
+  ![img](IntelliJ.assets/1.png)
+
+
+
+###  5. Terminal 열어서 변경 확인
+
