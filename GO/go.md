@@ -14,18 +14,24 @@ https://artist-developer.tistory.com/4
 
 - 프로젝트를 다른 디렉토리에 만들 수 없다 -> 무조건 Go PATH 디렉토리에 저장!
 
-- Window -  c:\Go
+- Window -  c:\Go (이 폴더는 필수적으로 존재해야 한다)
 
 - Mac - /(local)user/go/ 
 
+- Go폴더 안에 다음과 같이 폴더를 만든다
+
+  - ![image-20220624191050912](go.assets/image-20220624191050912.png)
+
 - 원하는 곳 어디에서든 코드를 다운받아 사용할 수 있다
 
+  - npm, pypi 같은 곳이 없다
   - 코드를 다운로드 받아온 도메인으로 분류해 저장해두면 분류가 쉽다
     ![image-20211002140531386](go.assets/image-20211002140531386.png)
 
   ---
 
 - 컴파일이 필요하면 main.go로 만든다 - 컴파일러는 패키지 이름이 main인 것 부터 찾는다
+
 - func main(){}은 Go 프로그램의 시작점이 
 
 ```go

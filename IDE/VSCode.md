@@ -61,6 +61,16 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 - word wrap
 - ctrl + = / - : 화면 키우기, 줄이기
 
+### 주석 색 변경하기
+
+```
+ctrl + , 해서 .json 검색해서 settings.json 클릭
+아래 추가!
+"editor.tokenColorCustomizations": {
+        "comments": "#EFDC05"  (#원하는 색의 색상코드)
+    },
+```
+
 
 
 ---
