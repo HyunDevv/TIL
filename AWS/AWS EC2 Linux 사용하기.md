@@ -119,21 +119,3 @@ vi /home/ec2-user/eclipse/java-2020-06/eclipse/eclipse.ini
 ## AWS 로컬 Oracle DB를 AWS RDS로 옮기기
 
 https://velog.io/@dsunni/%EB%A1%9C%EC%BB%AC-Oracle-DB%EB%A5%BC-AWS-RDS%EB%A1%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0
-
-
-
----
-
-
-
-## AWS 비용 이슈 대처법
-
-### 결제알람설정
-
-### 테스트 후 리소스 정리
-
-![image-20220417125824699](AWS%20EC2%20Linux%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20220417125824699.png)
-
-### 프리티어 계정이 만료된 경우
-
-![image-20220417125850670](AWS%20EC2%20Linux%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20220417125850670.png)
