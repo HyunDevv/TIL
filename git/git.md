@@ -181,7 +181,7 @@ origin  https://github.com/KimJaeHyun52/TIL.git (fetch)
 origin  https://github.com/KimJaeHyun52/TIL.git (push)
 ```
 
-### 3. push 
+### 3. push
 
 ```bash
 $ git push origin master
@@ -942,3 +942,78 @@ The stash entry is kept in case you need it again.
   * 우와와와
   >>>>>>> Stashed changes     # 임시공간에 있던 내용
   ```
+
+
+
+---
+
+Git 충돌(conflict) / vscode를 병합(merge)도구로 사용하기
+
+https://yasic-or-nunch.tistory.com/65
+
+---
+
+
+## 기존 원격저장소에서 다른 원격저장소로 프로젝트 이관하기
+
+```
+git clone --mirror {기존 원격 repo}
+
+만들어진 폴더 들어가서
+git remote set-url --push origin {이후 원격 repo}
+git push --mirror
+(push 에러가 난다면 gitlab의 project에서 Settings에서 Repository - Protected branches의 Allow force push를 체크한다)
+```
+
+## 다른 repository에서 프로젝트 가져오기
+
+```
+$ git remote add <병합할 저장소 이름> <병합할 저장소 주소>
+$ git fetch <병합할 저장소 이름>
+$ git merge --allow-unrelated-histories <병합할 저장소 이름>/<병합하고 싶은 branch 이름>
+$ git remote remove <병합할 저장소 이름>
+$ git commit -m "Merge : <병합할 저장소 이름> into <유지할 저장소 이름>"
+```
+---
+
+## 타이포라 무료버전
+
+https://typora.io/windows/dev_release.html
+
+---
+
+## [[Git\] SSL certificate problem : self signed certificate 에러](https://swjeong.tistory.com/161)
+
+SSL 보안서버 인증서를 구매하여 사용하지 않고, Open SSL 인증서를 사용한 경우 git push시 SSL에러가 발생한다.
+
+이를 해결하기 위해 **CA에서 인증하는 절차를 무시**하는 방법이 있다.
+
+window 사용자는 cmd
+
+mac 사용자는 terminal에서
+
+| 1    | git config --global http.sslVerify false | [cs](http://colorscripter.com/info#e) |
+| ---- | ---------------------------------------- | ------------------------------------- |
+|      |                                          |                                       |
+
+명령어를 사용하여 global값을 설정한다.
+
+---
+
+## Git bash 기본값으로 설정하기
+
+- ctrl + shift + p에 settings 입력
+- settings.json에 아래 입력 (user setting)
+```
+{
+    "terminal.integrated.profiles.windows": {
+        "GitBash": {
+            "path": ["C:\\Git\\bin\\bash.exe"],
+        },
+    },
+    "terminal.integrated.defaultProfile.windows": "GitBash",
+}
+```
+---
+## git diff
+https://engineer-mole.tistory.com/130

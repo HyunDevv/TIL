@@ -61,6 +61,16 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 - word wrap
 - ctrl + = / - : 화면 키우기, 줄이기
 
+### 주석 색 변경하기
+
+```
+ctrl + , 해서 .json 검색해서 settings.json 클릭
+아래 추가!
+"editor.tokenColorCustomizations": {
+        "comments": "#EFDC05"  (#원하는 색의 색상코드)
+    },
+```
+
 
 
 ---
@@ -95,5 +105,56 @@ Sync: 업로드 완료. GIST ID: 3733c7b4da5dedb5905f065c329f9dac. 다른 기기
 
 - visual studio live share
 
+---
 
+## ESLint 저장시 자동 fix
+
+### **문제 사항**
+
+
+
+![img](VSCode.assets/img.png)
+
+
+
+위와 같이 VS Code에는
+
+저장 시 자동으로 ES Lint 설정에 따라
+
+JavaScript 문법 검사 후 Fix 하는 기능이 있다.
+
+![img](VSCode.assets/img-16513190450131.png)
+
+
+
+아니 근데 개발환경 다시 세팅하고 ES Lint 깔았더니 없다;;
+
+------
+
+### **해결 방법**
+
+![img](VSCode.assets/img-16513190450132.png)
+
+
+
+명령 팔레트 > setting json 입력 > 기본 설정: 설정 열기(JSON) 선택
+
+ 
+
+
+
+![img](VSCode.assets/img-16513190450133.png)
+
+
+
+위와 같이 입력
+
+```xml
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true    ## ES Lint 저장 시 자동 fix 설정
+  },
+  "editor.formatOnSave": true,      ## document formatting 자동 fix 설정
+```
+
+ 
 
