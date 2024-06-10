@@ -1937,11 +1937,6 @@ const z4 = new Bmw("black");
 
 
 
-
-다음강의 : https://www.youtube.com/watch?v=jlzvXcDGZUU&list=PLJf6aFJoJtbUXW6T4lPUk7C66yEneX7MN&index=5
-
----
-
 ## NodeJS
 
 ### URL
